@@ -35,6 +35,36 @@
 
     --radius: 0.75rem;
   }
+
+  .dark {
+    --background: 120 15% 8%;
+    --foreground: 60 30% 96%;
+
+    --card: 120 15% 11%;
+    --card-foreground: 60 30% 96%;
+
+    --popover: 120 15% 10%;
+    --popover-foreground: 60 30% 96%;
+
+    --primary: 142 50% 45%;
+    --primary-foreground: 120 5% 10%;
+
+    --secondary: 95 20% 20%;
+    --secondary-foreground: 60 30% 96%;
+
+    --muted: 120 15% 15%;
+    --muted-foreground: 60 10% 65%;
+
+    --accent: 120 20% 20%;
+    --accent-foreground: 60 30% 96%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 60 30% 96%;
+
+    --border: 120 15% 20%;
+    --input: 120 15% 20%;
+    --ring: 142 50% 45%;
+  }
 }
 
 @layer base {
@@ -52,11 +82,13 @@
   .habit-button {
     @apply relative flex flex-col items-center justify-center p-4 rounded-2xl 
     bg-white border-2 border-secondary shadow-sm transition-all duration-300
-    hover:shadow-md hover:border-primary/30 active:scale-95;
+    hover:shadow-md hover:border-primary/30 active:scale-95
+    dark:bg-card dark:border-border dark:hover:border-primary/30;
   }
   
   .habit-completed {
-    @apply border-primary/50 bg-accent/50;
+    @apply border-primary/50 bg-accent/50
+    dark:bg-accent/20 dark:border-primary/40;
   }
 
   .emoji-container {
@@ -71,6 +103,17 @@
   .add-habit-button {
     @apply flex items-center justify-center h-24 rounded-2xl border-2 border-dashed 
     border-muted-foreground/30 text-muted-foreground hover:border-primary/30 
-    hover:text-primary/70 transition-colors;
+    hover:text-primary/70 transition-colors
+    dark:border-muted-foreground/20 dark:hover:border-primary/40;
   }
+}
+
+/* Animation for subtle pulse effect */
+@keyframes pulse-light {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.animate-pulse-light {
+  animation: pulse-light 0.75s ease-in-out;
 }

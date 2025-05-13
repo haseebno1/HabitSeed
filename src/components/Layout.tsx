@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, CalendarCheck } from "lucide-react";
+import { ThemeToggle } from "./ThemeProvider";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,11 +13,12 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="min-h-screen flex flex-col max-w-md mx-auto px-4">
-      <header className="py-6">
+      <header className="py-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center">
           <span className="text-primary mr-2">Habit</span>Seed
           <span className="ml-2 text-xl">🌱</span>
         </h1>
+        <ThemeToggle />
       </header>
       
       <main className="flex-1">

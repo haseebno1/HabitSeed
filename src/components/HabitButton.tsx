@@ -23,6 +23,7 @@ const HabitButton = ({
 }: HabitButtonProps) => {
   const [showMilestone, setShowMilestone] = useState(false);
   const [prevStreak, setPrevStreak] = useState(streak);
+  const [isAnimating, setIsAnimating] = useState(false);
   
   // Show milestone animation when streak reaches a milestone
   useEffect(() => {
@@ -37,22 +38,48 @@ const HabitButton = ({
   // Get the appropriate growth emoji based on streak
   const displayEmoji = emoji === "🌱" ? getGrowthStageEmoji(streak, emoji) : emoji;
 
+  // Handle click with animation
+  const handleToggle = () => {
+    if (!completed) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 500);
+    }
+    onToggle(id);
+  };
+
   return (
     <motion.button
       className={cn(
         "habit-button",
-        completed && "habit-completed"
+        completed && "habit-completed",
+        isAnimating && "animate-pulse-light"
       )}
-      onClick={() => onToggle(id)}
+      onClick={handleToggle}
       whileTap={{ scale: 0.95 }}
       layout
     >
       {streak > 0 && (
-        <span className="streak-badge">{streak}</span>
+        <motion.span
+          className="streak-badge"
+          initial={streak > prevStreak ? { scale: 1.5 } : { scale: 1 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 500, damping: 15 }}
+        >
+          {streak}
+        </motion.span>
       )}
       
       <div className="emoji-container relative">
-        {displayEmoji}
+        <motion.div
+          key={displayEmoji}
+          initial={{ scale: streak > prevStreak ? 0.5 : 1 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 500, damping: 15 }}
+        >
+          {displayEmoji}
+        </motion.div>
         
         {completed && (
           <motion.div
