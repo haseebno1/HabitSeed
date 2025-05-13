@@ -1,7 +1,7 @@
 
-import React from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn, getGrowthStageEmoji, isMilestoneStreak } from "@/lib/utils";
 import { Check } from "lucide-react";
 
 interface HabitButtonProps {
@@ -21,6 +21,22 @@ const HabitButton = ({
   completed,
   onToggle,
 }: HabitButtonProps) => {
+  const [showMilestone, setShowMilestone] = useState(false);
+  const [prevStreak, setPrevStreak] = useState(streak);
+  
+  // Show milestone animation when streak reaches a milestone
+  useEffect(() => {
+    if (streak > prevStreak && isMilestoneStreak(streak)) {
+      setShowMilestone(true);
+      const timer = setTimeout(() => setShowMilestone(false), 3000);
+      return () => clearTimeout(timer);
+    }
+    setPrevStreak(streak);
+  }, [streak, prevStreak]);
+
+  // Get the appropriate growth emoji based on streak
+  const displayEmoji = emoji === "🌱" ? getGrowthStageEmoji(streak, emoji) : emoji;
+
   return (
     <motion.button
       className={cn(
@@ -35,8 +51,9 @@ const HabitButton = ({
         <span className="streak-badge">{streak}</span>
       )}
       
-      <div className="emoji-container">
-        {emoji}
+      <div className="emoji-container relative">
+        {displayEmoji}
+        
         {completed && (
           <motion.div
             initial={{ scale: 0 }}
@@ -46,6 +63,21 @@ const HabitButton = ({
             <Check className="text-primary h-8 w-8 stroke-[3]" />
           </motion.div>
         )}
+        
+        <AnimatePresence>
+          {showMilestone && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full"
+            >
+              <div className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs whitespace-nowrap">
+                🎉 {streak} day streak!
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       
       <span className="text-sm font-medium truncate max-w-full px-1">

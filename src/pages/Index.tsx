@@ -8,7 +8,7 @@ import AddHabitButton from "@/components/AddHabitButton";
 import HabitForm from "@/components/HabitForm";
 import EmptyState from "@/components/EmptyState";
 import SuccessAnimation from "@/components/SuccessAnimation";
-import { getToday } from "@/lib/utils";
+import { getToday, isMilestoneStreak, getMilestoneMessage } from "@/lib/utils";
 
 // Define types
 interface Habit {
@@ -85,11 +85,22 @@ const Index = () => {
         
         // If this is consecutive day completion, increase streak
         const newStreak = h.lastCompleted ? h.streaks + 1 : 1;
+        
+        // Check if this is a milestone streak
+        if (isMilestoneStreak(newStreak)) {
+          setTimeout(() => {
+            toast(getMilestoneMessage(newStreak), {
+              duration: 4000,
+            });
+          }, 500);
+        } else {
+          toast("Habit completed! Keep it up! 🌱");
+        }
+        
         return { ...h, streaks: newStreak, lastCompleted: today };
       });
       
       setHabits(updatedHabits);
-      toast("Habit completed! Keep it up! 🌱");
     }
   };
   
