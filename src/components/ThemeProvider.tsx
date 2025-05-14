@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+
+import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { applyThemeColors, getThemeById } from "@/lib/themes";
 
@@ -12,14 +13,14 @@ interface ThemeContextType {
   toggleColorMode: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType>({
+const ThemeContext = React.createContext<ThemeContextType>({
   theme: 'default',
   colorMode: 'light',
   setTheme: () => {},
   toggleColorMode: () => {},
 });
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => React.useContext(ThemeContext);
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -27,12 +28,12 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Get initial theme and color mode from localStorage or system preference
-  const [theme, setThemeState] = useState<Theme>(() => {
+  const [theme, setThemeState] = React.useState<Theme>(() => {
     const savedTheme = localStorage.getItem('themeId') as Theme;
     return savedTheme || 'default';
   });
   
-  const [colorMode, setColorMode] = useState<ColorMode>(() => {
+  const [colorMode, setColorMode] = React.useState<ColorMode>(() => {
     const savedMode = localStorage.getItem('colorMode') as ColorMode;
     if (savedMode) return savedMode;
     
@@ -61,7 +62,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   // Apply theme class and colors to document
-  useEffect(() => {
+  React.useEffect(() => {
     const root = window.document.documentElement;
     
     if (colorMode === 'dark') {
