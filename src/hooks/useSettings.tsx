@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import storage from "@/lib/storage";
 
@@ -74,7 +75,11 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
       }
     };
     
-    loadSettings();
+    // Call loadSettings immediately and handle any promise rejections
+    loadSettings().catch(err => {
+      console.error("Failed to load settings:", err);
+      setIsInitialized(true); // Ensure we still set initialized even if there's an error
+    });
   }, []);
   
   // Update storage when settings change
