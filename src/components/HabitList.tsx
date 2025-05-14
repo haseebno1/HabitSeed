@@ -1,12 +1,13 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Habit } from "@/hooks/useHabits";
+import { useSettings } from "@/hooks/useSettings";
 import HabitButton from "@/components/HabitButton";
 import AddHabitButton from "@/components/AddHabitButton";
 import SuccessAnimation from "@/components/SuccessAnimation";
 
-export const MAX_HABITS = 3;
+// Default value, will be overridden by settings
+const DEFAULT_MAX_HABITS = 3;
 
 interface HabitListProps {
   habits: Habit[];
@@ -25,15 +26,17 @@ const HabitList = ({
   onEditHabit,
   onAddHabit
 }: HabitListProps) => {
+  const { maxHabits, showStreakBadges } = useSettings();
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"
+      className="flex flex-col gap-3 px-1 py-2 mb-4"
     >
       {habits.map(habit => (
-        <div key={habit.id} className="relative">
+        <div key={habit.id} className="relative w-full">
           <HabitButton
             id={habit.id}
             name={habit.name}
@@ -41,12 +44,14 @@ const HabitList = ({
             streak={habit.streaks}
             completed={completedHabits.includes(habit.id)}
             onToggle={onToggleHabit}
+            showStreakBadge={showStreakBadges}
           />
           
           <button
             onClick={() => onEditHabit(habit)}
-            className="absolute bottom-1 right-1 w-6 h-6 rounded-full bg-secondary/80 
+            className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-secondary/80 
             flex items-center justify-center hover:bg-primary/20 transition-colors"
+            aria-label="Edit habit"
           >
             <span className="sr-only">Edit</span>
             <span className="text-xs">✏️</span>
@@ -59,7 +64,7 @@ const HabitList = ({
         </div>
       ))}
       
-      {habits.length < MAX_HABITS && (
+      {habits.length < maxHabits && (
         <AddHabitButton onClick={onAddHabit} />
       )}
     </motion.div>

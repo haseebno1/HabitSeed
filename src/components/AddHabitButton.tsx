@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
@@ -14,20 +13,13 @@ const AddHabitButton = ({ onClick, disabled = false }: AddHabitButtonProps) => {
       className="add-habit-button"
       onClick={onClick}
       disabled={disabled}
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
+      aria-label="Add new habit"
     >
-      <div className="flex flex-col items-center justify-center h-full">
-        <Plus className="h-6 w-6 mb-1" />
-        <span className="text-xs font-medium">New Habit</span>
-      </div>
-      
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
-        <div className="flex gap-1">
-          <span className="text-lg">🌱</span>
-          <span className="text-lg">→</span>
-          <span className="text-lg">🌳</span>
-        </div>
+      <div className="flex items-center justify-center">
+        <Plus className="h-5 w-5 mr-2" />
+        <span className="text-sm font-medium">Add New Habit</span>
       </div>
     </motion.button>
   );

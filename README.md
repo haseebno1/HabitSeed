@@ -1,73 +1,132 @@
-# Welcome to your Lovable project
+# 🌱 Habit Seed
 
-## Project info
+A simple, beautiful habit tracker that helps you grow your routines—one small step at a time.
 
-**URL**: https://lovable.dev/projects/711103d4-223a-41ed-a4d0-9f1541e1d900
+## Features
 
-## How can I edit this code?
+- 📝 Create and track daily habits
+- 🗓️ View progress in a weekly journal view
+- 📊 See statistics about your habits
+- 🌓 Light/dark mode
+- 📱 Works as a web app or native Android app
+- 🔒 Private and secure - all data stays on your device
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- React + TypeScript
+- Vite
+- TailwindCSS
+- Capacitor for Android
+- IndexedDB / Capacitor Preferences for storage
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/711103d4-223a-41ed-a4d0-9f1541e1d900) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v16+)
+- npm
+- For Android development:
+  - Android Studio
+  - JDK 11+
+  - Android SDK
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/habit-seed.git
+cd habit-seed
+```
 
-Follow these steps:
+2. Install dependencies:
+```bash
+npm install
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Run the web app in development mode:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Building for Web
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To build the web application:
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The built files will be in the `dist` directory.
 
-## What technologies are used for this project?
+## Android Development
 
-This project is built with:
+### First-time setup
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Install Android Studio
+2. Install required SDKs through Android Studio's SDK Manager
+3. Set up environment variables:
+   - `ANDROID_HOME` pointing to your Android SDK location
+   - Add platform-tools to your PATH
 
-## How can I deploy this project?
+### Building for Android
 
-Simply open [Lovable](https://lovable.dev/projects/711103d4-223a-41ed-a4d0-9f1541e1d900) and click on Share -> Publish.
+1. Build the web app and sync with Android:
+```bash
+npm run build:android
+```
 
-## Can I connect a custom domain to my Lovable project?
+2. Open the Android project in Android Studio:
+```bash
+npm run open:android
+```
 
-Yes, you can!
+3. Run the Android app on a connected device or emulator:
+```bash
+npm run run:android
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Manually update Android files
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+If you've made changes to the Capacitor configuration:
+
+```bash
+npm run sync:android
+```
+
+## Project Structure
+
+```
+habit-seed/
+├── android/              # Android native files (generated)
+├── src/
+│   ├── components/       # Reusable UI components
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Utility functions and services
+│   ├── pages/            # App pages/screens
+│   └── App.tsx           # Main component
+├── capacitor.config.ts   # Capacitor configuration
+├── index.html            # Entry HTML file
+├── package.json          # Dependencies and scripts
+├── tailwind.config.js    # TailwindCSS configuration
+├── tsconfig.json         # TypeScript configuration
+├── vite.config.ts        # Vite configuration
+└── README.md             # Project documentation
+```
+
+## Data Storage
+
+Habit Seed uses different storage mechanisms depending on the platform:
+
+- Web app: Uses IndexedDB with localStorage fallback
+- Android app: Uses Capacitor Preferences API
+
+All data is stored locally on the user's device for maximum privacy.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built with [shadcn/ui](https://ui.shadcn.com/) components
+- Icons from [Lucide Icons](https://lucide.dev/)

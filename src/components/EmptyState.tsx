@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ interface EmptyStateProps {
 
 const EmptyState = ({ onAddHabit }: EmptyStateProps) => {
   return (
-    <div className="flex flex-col items-center justify-center p-8 text-center h-[70vh]">
+    <div className="flex flex-col items-center justify-center px-4 py-6 text-center h-[60vh]">
       <div className="rounded-full bg-secondary/50 p-4 mb-4">
         <Sprout className="h-10 w-10 text-primary" />
       </div>
@@ -17,17 +16,23 @@ const EmptyState = ({ onAddHabit }: EmptyStateProps) => {
       <p className="text-muted-foreground mb-2 max-w-xs">
         Add up to 3 simple habits you want to track daily. Tap to check them off.
       </p>
-      <p className="text-muted-foreground mb-6 max-w-xs flex items-center justify-center gap-2">
+      <div className="text-muted-foreground mb-6 flex flex-wrap items-center justify-center gap-1 max-w-xs">
         <span>Watch them grow from</span> 
-        <span className="text-lg">🌱</span> 
-        <span className="text-lg">→</span> 
-        <span className="text-lg">🌿</span> 
-        <span className="text-lg">→</span> 
-        <span className="text-lg">🪴</span> 
-        <span className="text-lg">→</span> 
-        <span className="text-lg">🌳</span>
-      </p>
-      <Button onClick={onAddHabit} className="flex items-center">
+        <div className="flex items-center">
+          <span className="text-lg">🌱</span> 
+          <span className="text-lg mx-1">→</span> 
+          <span className="text-lg">🌿</span> 
+          <span className="text-lg mx-1">→</span> 
+          <span className="text-lg">🪴</span> 
+          <span className="text-lg mx-1">→</span> 
+          <span className="text-lg">🌳</span>
+        </div>
+      </div>
+      <Button 
+        onClick={onAddHabit} 
+        className="w-full max-w-xs flex items-center justify-center py-6"
+        size="lg"
+      >
         Add Your First Habit
       </Button>
     </div>
