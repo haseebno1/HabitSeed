@@ -5,6 +5,7 @@
   <h3>Build better habits, one seed at a time</h3>
   
   [![Build and Test](https://github.com/haseebno1/HabitSeed/actions/workflows/build.yml/badge.svg)](https://github.com/haseebno1/HabitSeed/actions/workflows/build.yml)
+  ![GitHub release (latest by tag)](https://img.shields.io/github/v/release/haseebno1/HabitSeed?label=Release&logo=github)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![GitHub issues](https://img.shields.io/github/issues/haseebno1/HabitSeed)](https://github.com/haseebno1/HabitSeed/issues)
 </div>
