@@ -182,10 +182,39 @@ jobs:
           exit 1
         fi
     
+    - name: Update Gradle wrapper if needed
+      run: |
+        if [ -d "android" ]; then
+          cd android
+          
+          # Check the current Gradle wrapper version
+          WRAPPER_PROPERTIES="gradle/wrapper/gradle-wrapper.properties"
+          if [ -f "$WRAPPER_PROPERTIES" ]; then
+            echo "Current Gradle wrapper configuration:"
+            cat "$WRAPPER_PROPERTIES"
+            
+            # Check if we need to update the distributionUrl
+            if grep -q "MaxPermSize" "$WRAPPER_PROPERTIES"; then
+              echo "Updating Gradle wrapper distributionUrl..."
+              sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.0-bin.zip|g' "$WRAPPER_PROPERTIES"
+              echo "Updated to:"
+              cat "$WRAPPER_PROPERTIES"
+            fi
+          else
+            echo "Gradle wrapper properties file not found"
+          fi
+        else
+          echo "Android directory not found"
+        fi
+    
     - name: Configure Gradle for CI environment
       run: |
         if [ -f "android/gradle.properties" ]; then
-          echo "org.gradle.jvmargs=-Xmx3g -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" >> android/gradle.properties
+          # Remove any existing JVM args line to avoid appending to it
+          sed -i '/org.gradle.jvmargs/d' android/gradle.properties
+          
+          # Add updated JVM args without MaxPermSize (which is obsolete in Java 8+)
+          echo "org.gradle.jvmargs=-Xmx2g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8" >> android/gradle.properties
           echo "org.gradle.daemon=false" >> android/gradle.properties
           echo "org.gradle.parallel=true" >> android/gradle.properties
           echo "android.enableJetifier=true" >> android/gradle.properties
@@ -196,7 +225,17 @@ jobs:
       run: |
         if [ -d "android" ]; then
           cd android
-          ./gradlew --no-daemon --info assembleDebug
+          
+          # Create a local properties file with SDK location
+          echo "sdk.dir=/opt/hostedtoolcache/Android/sdk" > local.properties
+          
+          # Use a more conservative build command without problematic JVM options
+          # Disable daemon, reduce memory requirements, enable stacktraces for debugging
+          ./gradlew --no-daemon \
+            -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" \
+            --stacktrace \
+            --warning-mode all \
+            assembleDebug
         else
           echo "Android directory not found, cannot build"
           exit 1
