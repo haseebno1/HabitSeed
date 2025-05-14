@@ -6,6 +6,7 @@
   
   [![Build and Test](https://github.com/haseebno1/HabitSeed/actions/workflows/build.yml/badge.svg)](https://github.com/haseebno1/HabitSeed/actions/workflows/build.yml)
   ![GitHub release (latest by tag)](https://img.shields.io/github/v/release/haseebno1/HabitSeed?label=Release&logo=github)
+  [![Download APK](https://img.shields.io/badge/Download-APK-brightgreen?style=flat&logo=android)](https://github.com/haseebno1/HabitSeed/releases/download/v1.0.0/Habit.Seed_1.0.apk)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![GitHub issues](https://img.shields.io/github/issues/haseebno1/HabitSeed)](https://github.com/haseebno1/HabitSeed/issues)
 </div>
