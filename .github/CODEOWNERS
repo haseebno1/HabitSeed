@@ -1,0 +1,17 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# they will be requested for review when someone opens a pull request.
+* @haseebno1
+
+# Android specific code
+/android/ @haseebno1
+
+# GitHub configuration files
+/.github/ @haseebno1
+
+# Core functionality
+/src/hooks/ @haseebno1
+/src/lib/ @haseebno1
+
+# UI Components
+/src/components/ @haseebno1 

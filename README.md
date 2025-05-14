@@ -1,26 +1,36 @@
 # 🌱 HabitSeed
 
-A beautiful, intuitive habit tracking app designed to help you build consistent routines—one day at a time.
+<div align="center">
+  <img src="public/habit-seed-logo.png" alt="HabitSeed Logo" width="150">
+  <h3>Build better habits, one seed at a time</h3>
+  
+  [![Build and Test](https://github.com/haseebno1/HabitSeed/actions/workflows/build.yml/badge.svg)](https://github.com/haseebno1/HabitSeed/actions/workflows/build.yml)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![GitHub issues](https://img.shields.io/github/issues/haseebno1/HabitSeed)](https://github.com/haseebno1/HabitSeed/issues)
+</div>
+
+HabitSeed is a beautiful, intuitive habit tracking app designed to help you build consistent routines—one day at a time. With a focus on simplicity and meaningful visual feedback, HabitSeed helps you cultivate positive habits that grow with consistency.
 
 ## ✨ Features
 
-- 📝 Create and track daily habits with customizable colors
-- 🔄 Track streaks and habit completion statistics
-- 🗓️ Journal view to review your weekly progress
-- 📊 Visual statistics to monitor your habit consistency
-- 🌓 Dark/light theme with customizable appearance
-- 💾 Data backup and restore capabilities
-- 📱 Responsive design for mobile and desktop
-- 🔒 Privacy-focused: all data stays on your device
+- 📝 Create and track daily, weekly, and monthly habits with custom templates
+- 🔄 Track streaks and visualize your consistency with beautiful growth-themed UI
+- 🌓 Dark/light theme to match your preferences
+- 💾 Private and secure - all data stays on your device
+- 📱 Works on web and Android
+- 🚫 No account required - get started in seconds
+- 🎯 Multiple tracking types: checkbox, quantity, and duration
+- 📊 Statistics to monitor your habit consistency
 
-## 🛠️ Tech Stack
+## 🖥️ Screenshots
 
-- React 18 with TypeScript
-- Vite for fast builds and development
-- TailwindCSS with shadcn/ui components
-- Lucide for beautiful icons
-- IndexedDB for robust data storage
-- Capacitor for mobile platform compatibility
+<div align="center">
+  <p>
+    <img src="public/screenshots/screenshot1.png" alt="HabitSeed Screenshot 1" width="250">
+    <img src="public/screenshots/screenshot2.png" alt="HabitSeed Screenshot 2" width="250">
+    <img src="public/screenshots/screenshot3.png" alt="HabitSeed Screenshot 3" width="250">
+  </p>
+</div>
 
 ## 🚀 Getting Started
 
@@ -37,8 +47,8 @@ A beautiful, intuitive habit tracking app designed to help you build consistent 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/haseebno1/habit-spark-check-33.git
-cd habit-spark-check-33
+git clone https://github.com/haseebno1/HabitSeed.git
+cd HabitSeed
 ```
 
 2. Install dependencies:
@@ -80,10 +90,19 @@ npx cap open android
 
 3. Run on a device or emulator through Android Studio
 
+## 🛠️ Tech Stack
+
+- React 18 with TypeScript
+- Vite for fast builds and development
+- TailwindCSS with shadcn/ui components
+- Lucide for beautiful icons
+- IndexedDB for robust data storage
+- Capacitor for mobile platform compatibility
+
 ## 📂 Project Structure
 
 ```
-habit-spark/
+HabitSeed/
 ├── src/
 │   ├── components/       # UI components (HabitButton, HabitList, etc.)
 │   ├── hooks/            # Custom React hooks (useHabits, useSettings)
@@ -91,14 +110,13 @@ habit-spark/
 │   ├── pages/            # App pages (Index, Journal, Settings)
 │   └── App.tsx           # Main component with routing
 ├── public/               # Static assets
+├── android/              # Android platform code
 ├── index.html            # Entry HTML file
 ├── package.json          # Dependencies and scripts
-├── tailwind.config.ts    # TailwindCSS configuration
-├── tsconfig.json         # TypeScript configuration
 └── vite.config.ts        # Vite configuration
 ```
 
-## 💾 Data Management
+## 💾 Data Privacy
 
 HabitSeed stores all your data locally:
 
@@ -107,25 +125,40 @@ HabitSeed stores all your data locally:
 - Ensures your habit data remains private and secure
 - Enables data backup and restore via JSON export/import
 
-## ⚙️ Settings & Customization
-
-The app includes a comprehensive settings page:
-
-- **Appearance**: Toggle between light and dark themes
-- **Preferences**: Customize habit limits and behavior
-- **Data Management**: Backup, restore, and reset data
-- **About**: Information about the app and developer
-
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to submit pull requests or open issues to suggest improvements.
+Contributions are welcome! Please check out our [Contributing Guide](CONTRIBUTING.md) for details on:
+
+- How to set up the development environment
+- The submission process for pull requests
+- Our code of conduct
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔒 Security
+
+For information about our security practices and how to report security issues, please see our [Security Policy](SECURITY.md).
 
 ## 👏 Acknowledgments
 
 - Built with [shadcn/ui](https://ui.shadcn.com/) components
 - Icons from [Lucide Icons](https://lucide.dev/)
 - Storage implementations inspired by [Capacitor Storage](https://capacitorjs.com/docs/apis/storage)
+
+## 📬 Contact & Support
+
+- Report bugs or request features through [GitHub Issues](https://github.com/haseebno1/HabitSeed/issues)
+- Follow updates and announcements on [Twitter](#)
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by <a href="https://github.com/haseebno1">haseebno1</a></p>
+  <p>
+    <a href="https://github.com/haseebno1/HabitSeed/stargazers">⭐ Star us on GitHub</a> •
+    <a href="https://github.com/haseebno1/HabitSeed/issues">🐛 Report a bug</a> •
+    <a href="https://github.com/haseebno1/HabitSeed/discussions">💬 Discussions</a>
+  </p>
+</div>

@@ -7,7 +7,7 @@ Thank you for considering contributing to HabitSeed! This document outlines the 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests and ensure code quality
+4. Run the app locally to test your changes
 5. Commit your changes (`git commit -m 'Add some amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
@@ -20,7 +20,7 @@ Follow the instructions in the README.md to set up your development environment.
 
 - We use ESLint and Prettier for code formatting
 - Follow the existing code style in the project
-- Run `npm run lint` before submitting your PR
+- React/TypeScript best practices apply
 
 ## Bug Reports
 
@@ -47,6 +47,15 @@ We welcome feature requests! Please include:
 - Follow the existing code style
 - Write clear commit messages
 - Update the README.md if necessary
+
+## Design Considerations
+
+HabitSeed aims to be:
+
+- Intuitive and easy to use
+- Respectful of users' privacy
+- Accessible to all users
+- Fast and responsive
 
 ## License
 

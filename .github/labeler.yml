@@ -1,0 +1,42 @@
+# Add 'core' label to any change in the src/hooks or src/lib directories
+core:
+  - src/hooks/**/*
+  - src/lib/**/*
+
+# Add 'ui' label to any change within the src/components directory
+ui:
+  - src/components/**/*
+
+# Add 'docs' label to any change to documentation files
+docs:
+  - '**/*.md'
+  - docs/**/*
+
+# Add 'tests' label to any change to test files
+tests:
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+  - '**/*.spec.ts'
+  - '**/*.spec.tsx'
+
+# Add 'android' label to any change within the android directory
+android:
+  - android/**/*
+
+# Add 'github-actions' label to any change in the .github directory
+github-actions:
+  - .github/**/*
+
+# Add 'dependencies' label to changes in package files
+dependencies:
+  - package.json
+  - package-lock.json
+  - bun.lockb
+
+# Add 'config' label to changes in configuration files
+config:
+  - '*.config.ts'
+  - '*.config.js'
+  - vite.config.ts
+  - capacitor.config.ts
+  - tsconfig.json 

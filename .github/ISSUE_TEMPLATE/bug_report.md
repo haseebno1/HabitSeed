@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help us improve HabitSeed
 title: "[BUG]"
 labels: bug
 assignees: ''
@@ -23,7 +23,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
- - Device: [e.g. iPhone12, Desktop]
+ - Device: [e.g. iPhone13, Desktop]
  - OS: [e.g. iOS, Android, Windows, macOS]
  - Browser (if applicable): [e.g. chrome, safari]
  - App Version: [e.g. 1.0.0]
