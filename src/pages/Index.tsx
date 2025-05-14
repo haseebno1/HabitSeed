@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
@@ -69,34 +70,37 @@ const Index = () => {
         <p className="text-sm text-muted-foreground">{formattedDate}</p>
       </div>
 
-      {!isInitialized ? (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : (
-        <AnimatePresence mode="wait">
-          {habits.length === 0 ? (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <EmptyState onAddHabit={() => handleOpenForm()} />
-            </motion.div>
-          ) : (
-            <HabitList
-              key="habits"
-              habits={habits}
-              completedHabits={completedHabits}
-              showSuccessEmoji={showSuccessEmoji}
-              onToggleHabit={toggleHabit}
-              onEditHabit={handleOpenForm}
-              onAddHabit={() => handleOpenForm()}
-            />
-          )}
-        </AnimatePresence>
-      )}
+      <div className="min-h-[60vh]">
+        {!isInitialized ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            {habits.length === 0 ? (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="h-full"
+              >
+                <EmptyState onAddHabit={() => handleOpenForm()} />
+              </motion.div>
+            ) : (
+              <HabitList
+                key="habits"
+                habits={habits}
+                completedHabits={completedHabits}
+                showSuccessEmoji={showSuccessEmoji}
+                onToggleHabit={toggleHabit}
+                onEditHabit={handleOpenForm}
+                onAddHabit={() => handleOpenForm()}
+              />
+            )}
+          </AnimatePresence>
+        )}
+      </div>
       
       <HabitForm
         isOpen={isFormOpen}

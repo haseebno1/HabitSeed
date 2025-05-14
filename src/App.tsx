@@ -11,40 +11,32 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import SettingsProvider from "./hooks/useSettings";
 
-// Define Capacitor interface if not available
-declare global {
-  interface Window {
-    Capacitor?: {
-      isNativePlatform: () => boolean;
-    }
-  }
-}
-
-// Create a new QueryClient instance outside of component
+// Define QueryClient outside component to prevent recreating on render
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000 * 5, // 5 min
+      staleTime: 60 * 1000 * 5, // 5 minutes
+      retry: 1,
     },
   },
 });
 
-// Make App a function component to ensure proper React context
 const App: React.FC = () => {
+  // Setup notification channels for mobile apps
   React.useEffect(() => {
-    // Initialize Android notification channels when app starts
     const setupNotificationChannels = async () => {
       try {
-        if (window.Capacitor?.isNativePlatform()) {
+        if (typeof window !== 'undefined' && 
+            window.Capacitor && 
+            window.Capacitor.isNativePlatform()) {
           const { LocalNotifications } = await import('@capacitor/local-notifications');
           
-          // Create notification channels for different types of notifications
           await LocalNotifications.createChannel({
             id: 'reminders',
             name: 'Habit Reminders',
             description: 'Notifications to remind you about your daily habits',
-            importance: 5, // High importance
-            visibility: 1, // Public (shows on lock screen)
+            importance: 5,
+            visibility: 1,
             lights: true,
             vibration: true
           });
@@ -53,7 +45,7 @@ const App: React.FC = () => {
             id: 'streaks',
             name: 'Streak Alerts',
             description: 'Notifications about your habit streaks',
-            importance: 4, // Medium importance
+            importance: 4,
             visibility: 1,
             lights: true,
             vibration: true
@@ -63,7 +55,7 @@ const App: React.FC = () => {
             id: 'achievements',
             name: 'Achievements',
             description: 'Notifications for habit achievements and milestones',
-            importance: 3, // Default importance
+            importance: 3,
             visibility: 1,
             lights: true,
             vibration: true
@@ -80,30 +72,24 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <React.StrictMode>
-      <ThemeProvider>
-        <SettingsProvider>
-          <QueryClientProvider client={queryClient}>
-            <div className="antialiased min-h-screen">
-              <div className="max-w-2xl mx-auto">
-                <main className="flex flex-col min-h-screen">
-                  <BrowserRouter>
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/journal" element={<Journal />} />
-                      <Route path="/settings" element={<Settings />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </BrowserRouter>
-                </main>
-              </div>
-            </div>
-            <Sonner />
-            <Toaster />
-          </QueryClientProvider>
-        </SettingsProvider>
-      </ThemeProvider>
-    </React.StrictMode>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <SettingsProvider>
+        <QueryClientProvider client={queryClient}>
+          <div className="antialiased min-h-screen">
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/journal" element={<Journal />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+          <Sonner position="top-center" />
+          <Toaster />
+        </QueryClientProvider>
+      </SettingsProvider>
+    </ThemeProvider>
   );
 };
 

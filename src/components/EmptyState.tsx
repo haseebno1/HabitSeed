@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ interface EmptyStateProps {
 
 const EmptyState = ({ onAddHabit }: EmptyStateProps) => {
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-6 text-center h-[60vh]">
+    <div className="flex flex-col items-center justify-center py-6 text-center h-[60vh]">
       <div className="rounded-full bg-secondary/50 p-4 mb-4">
         <Sprout className="h-10 w-10 text-primary" />
       </div>

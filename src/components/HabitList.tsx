@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Habit } from "@/hooks/useHabits";
@@ -5,9 +6,6 @@ import { useSettings } from "@/hooks/useSettings";
 import HabitButton from "@/components/HabitButton";
 import AddHabitButton from "@/components/AddHabitButton";
 import SuccessAnimation from "@/components/SuccessAnimation";
-
-// Default value, will be overridden by settings
-const DEFAULT_MAX_HABITS = 3;
 
 interface HabitListProps {
   habits: Habit[];
@@ -33,7 +31,7 @@ const HabitList = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col gap-3 px-1 py-2 mb-4"
+      className="flex flex-col gap-3 py-2 mb-4"
     >
       {habits.map(habit => (
         <div key={habit.id} className="relative w-full">
