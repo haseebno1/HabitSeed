@@ -13,20 +13,12 @@ import SplashScreen from "./components/SplashScreen";
 import OnboardingModal from "./components/OnboardingModal";
 import DevTools from "./pages/DevTools";
 
-// Define Capacitor interface if not available
-declare global {
-  interface Window {
-    Capacitor?: {
-      isNativePlatform: () => boolean;
-    }
-  }
-}
-
-// Create a new QueryClient instance outside of component
+// Define QueryClient outside component to prevent recreating on render
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000 * 5, // 5 min
+      staleTime: 60 * 1000 * 5, // 5 minutes
+      retry: 1,
     },
   },
 });
@@ -76,16 +68,17 @@ const App: React.FC = () => {
     // Initialize Android notification channels when app starts
     const setupNotificationChannels = async () => {
       try {
-        if (window.Capacitor?.isNativePlatform()) {
+        if (typeof window !== 'undefined' && 
+            window.Capacitor && 
+            window.Capacitor.isNativePlatform()) {
           const { LocalNotifications } = await import('@capacitor/local-notifications');
           
-          // Create notification channels for different types of notifications
           await LocalNotifications.createChannel({
             id: 'reminders',
             name: 'Habit Reminders',
             description: 'Notifications to remind you about your daily habits',
-            importance: 5, // High importance
-            visibility: 1, // Public (shows on lock screen)
+            importance: 5,
+            visibility: 1,
             lights: true,
             vibration: true
           });
@@ -94,7 +87,7 @@ const App: React.FC = () => {
             id: 'streaks',
             name: 'Streak Alerts',
             description: 'Notifications about your habit streaks',
-            importance: 4, // Medium importance
+            importance: 4,
             visibility: 1,
             lights: true,
             vibration: true
@@ -104,7 +97,7 @@ const App: React.FC = () => {
             id: 'achievements',
             name: 'Achievements',
             description: 'Notifications for habit achievements and milestones',
-            importance: 3, // Default importance
+            importance: 3,
             visibility: 1,
             lights: true,
             vibration: true
@@ -121,8 +114,8 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <React.StrictMode>
-      <ThemeProvider>
+    <ThemeProvider storageKey="vite-ui-theme">
+      <SettingsProvider>
         <QueryClientProvider client={queryClient}>
           <div className="antialiased min-h-screen">
             {shouldShowSplash && !splashFinished && (
@@ -141,8 +134,8 @@ const App: React.FC = () => {
           <Sonner />
           <Toaster />
         </QueryClientProvider>
-      </ThemeProvider>
-    </React.StrictMode>
+      </SettingsProvider>
+    </ThemeProvider>
   );
 };
 
