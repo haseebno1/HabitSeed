@@ -29,6 +29,27 @@ jobs:
       run: |
         npm clean-install || npm install
     
+    - name: Verify Capacitor dependencies
+      run: |
+        echo "Checking Capacitor dependencies..."
+        npm list @capacitor/core @capacitor/cli @capacitor/android || true
+        
+        # Install missing capacitor dependencies if needed
+        if ! npm list @capacitor/core | grep -q "@capacitor/core"; then
+          echo "Installing @capacitor/core..."
+          npm install @capacitor/core
+        fi
+        
+        if ! npm list @capacitor/cli | grep -q "@capacitor/cli"; then
+          echo "Installing @capacitor/cli..."
+          npm install @capacitor/cli
+        fi
+        
+        if ! npm list @capacitor/android | grep -q "@capacitor/android"; then
+          echo "Installing @capacitor/android..."
+          npm install @capacitor/android
+        fi
+    
     - name: List installed packages
       run: npm list --depth=0
     
@@ -68,6 +89,27 @@ jobs:
     - name: Install dependencies
       run: npm install
     
+    - name: Verify Capacitor dependencies
+      run: |
+        echo "Checking Capacitor dependencies..."
+        npm list @capacitor/core @capacitor/cli @capacitor/android || true
+        
+        # Install missing capacitor dependencies if needed
+        if ! npm list @capacitor/core | grep -q "@capacitor/core"; then
+          echo "Installing @capacitor/core..."
+          npm install @capacitor/core
+        fi
+        
+        if ! npm list @capacitor/cli | grep -q "@capacitor/cli"; then
+          echo "Installing @capacitor/cli..."
+          npm install @capacitor/cli
+        fi
+        
+        if ! npm list @capacitor/android | grep -q "@capacitor/android"; then
+          echo "Installing @capacitor/android..."
+          npm install @capacitor/android
+        fi
+    
     - name: Download web build
       uses: actions/download-artifact@v4
       with:
@@ -98,17 +140,37 @@ jobs:
         # Add Android platform
         npx cap add android
         
+        # Create basic capacitor config if needed
+        if [ ! -f "capacitor.config.ts" ] && [ ! -f "capacitor.config.js" ] && [ ! -f "capacitor.config.json" ]; then
+          echo "Creating basic capacitor.config.json"
+          echo '{
+            "appId": "com.habitseed.app",
+            "appName": "HabitSeed",
+            "webDir": "dist",
+            "bundledWebRuntime": false
+          }' > capacitor.config.json
+        fi
+        
         # Sync with the web build
         npx cap sync android
       env:
         CI: false
     
-    - name: Debug Android directory
+    - name: Debug Android Gradle setup
       run: |
-        echo "Content of current directory:"
-        ls -la
-        echo "Content of dist directory:"
-        ls -la dist || echo "dist directory not found"
+        echo "Android directory contents:"
+        ls -la android
+        
+        echo "Gradle version:"
+        if [ -f "android/gradlew" ]; then
+          cd android && ./gradlew --version
+        fi
+        
+        echo "Android app build.gradle:"
+        cat android/app/build.gradle || echo "build.gradle not found"
+        
+        echo "Android project gradle.properties:"
+        cat android/gradle.properties || echo "gradle.properties not found"
     
     - name: Set gradlew permissions
       run: |
@@ -116,15 +178,25 @@ jobs:
           chmod +x android/gradlew
           echo "Set execute permission on gradlew"
         else
-          echo "gradlew file not found, this is expected if Android platform failed to add"
+          echo "gradlew file not found, cannot proceed"
           exit 1
+        fi
+    
+    - name: Configure Gradle for CI environment
+      run: |
+        if [ -f "android/gradle.properties" ]; then
+          echo "org.gradle.jvmargs=-Xmx3g -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" >> android/gradle.properties
+          echo "org.gradle.daemon=false" >> android/gradle.properties
+          echo "org.gradle.parallel=true" >> android/gradle.properties
+          echo "android.enableJetifier=true" >> android/gradle.properties
+          echo "android.useAndroidX=true" >> android/gradle.properties
         fi
     
     - name: Build Android app
       run: |
         if [ -d "android" ]; then
           cd android
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew --no-daemon --info assembleDebug
         else
           echo "Android directory not found, cannot build"
           exit 1
