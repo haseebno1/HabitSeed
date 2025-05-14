@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,6 +31,35 @@ const HabitForm = ({
   const [name, setName] = useState(initialValues?.name || "");
   const [emoji, setEmoji] = useState(initialValues?.emoji || "🌱");
 
+  // Reset form values when initialValues changes or when the form opens/closes
+  useEffect(() => {
+    if (initialValues) {
+      setName(initialValues.name);
+      setEmoji(initialValues.emoji);
+    } else if (!isOpen) {
+      // Reset form when closing without initialValues
+      setName("");
+      setEmoji("🌱");
+    }
+  }, [initialValues, isOpen]);
+  
+  // Listen for the prefill-habit event
+  useEffect(() => {
+    const handlePrefillHabit = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail && !initialValues) {
+        setName(customEvent.detail.name || "");
+        setEmoji(customEvent.detail.emoji || "🌱");
+      }
+    };
+    
+    window.addEventListener('prefill-habit', handlePrefillHabit);
+    
+    return () => {
+      window.removeEventListener('prefill-habit', handlePrefillHabit);
+    };
+  }, [initialValues]);
+
   const handleSave = () => {
     if (!name.trim()) return;
     
@@ -39,11 +68,6 @@ const HabitForm = ({
       name: name.trim().slice(0, 25),
       emoji,
     });
-    
-    if (!initialValues) {
-      setName("");
-      setEmoji("🌱");
-    }
   };
 
   return (
@@ -91,6 +115,14 @@ const HabitForm = ({
                 </button>
               ))}
             </div>
+            
+            {/* Show custom emoji input if selected emoji is not in options */}
+            {!EMOJI_OPTIONS.includes(emoji) && (
+              <div className="flex items-center gap-2 mt-2 p-2 bg-muted rounded-md">
+                <span className="text-2xl">{emoji}</span>
+                <span className="text-sm text-muted-foreground">Custom emoji from suggestion</span>
+              </div>
+            )}
           </div>
         </div>
         
