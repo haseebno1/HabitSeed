@@ -238,20 +238,18 @@ jobs:
       run: |
         mkdir -p android/app/src/main/java/com/habitseed/app
         
-        # Create the Application class file
-        cat << 'EOF' > android/app/src/main/java/com/habitseed/app/MainApplication.java
-package com.habitseed.app;
-
-import android.app.Application;
-import androidx.multidex.MultiDexApplication;
-
-public class MainApplication extends MultiDexApplication {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-}
-EOF
+        # Create the Application class file without heredoc
+        echo "package com.habitseed.app;" > android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "import android.app.Application;" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "import androidx.multidex.MultiDexApplication;" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "public class MainApplication extends MultiDexApplication {" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "    @Override" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "    public void onCreate() {" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "        super.onCreate();" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "    }" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
+        echo "}" >> android/app/src/main/java/com/habitseed/app/MainApplication.java
         
         # Update AndroidManifest.xml if it exists
         if [ -f "android/app/src/main/AndroidManifest.xml" ]; then
