@@ -234,6 +234,26 @@ jobs:
           cat android/app/build.gradle
         fi
     
+    - name: Fix Java compatibility issues
+      run: |
+        # Update Capacitor Android source/target compatibility
+        if [ -f "android/capacitor-android/build.gradle" ]; then
+          echo "Fixing Java compatibility in capacitor-android/build.gradle"
+          sed -i 's/sourceCompatibility JavaVersion.VERSION_21/sourceCompatibility JavaVersion.VERSION_17/' android/capacitor-android/build.gradle
+          sed -i 's/targetCompatibility JavaVersion.VERSION_21/targetCompatibility JavaVersion.VERSION_17/' android/capacitor-android/build.gradle
+          cat android/capacitor-android/build.gradle
+        fi
+        
+        # Update main project build.gradle if needed
+        if [ -f "android/build.gradle" ]; then
+          echo "Checking main build.gradle file"
+          if grep -q "JavaVersion.VERSION_21" android/build.gradle; then
+            echo "Fixing Java compatibility in main build.gradle"
+            sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' android/build.gradle
+          fi
+          cat android/build.gradle
+        fi
+    
     - name: Configure MultiDex support
       run: |
         mkdir -p android/app/src/main/java/com/habitseed/app
