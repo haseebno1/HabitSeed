@@ -117,8 +117,3 @@ This document outlines planned improvements and features for HabitSeed, organize
 - Implement screen reader compatibility
 - Maintain sufficient color contrast
 - Support text scaling and responsive layouts 
-
-
-
-  git config --global user.email "abdulhaseeb5050@gmail.com"
-  git config --global user.name "Abdul Haseeb"
