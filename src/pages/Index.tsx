@@ -150,35 +150,22 @@ const Index = () => {
           <p className="text-sm text-muted-foreground">{formattedDate}</p>
         </div>
 
-<<<<<<< HEAD
-=======
-      <div className="min-h-[60vh]">
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
         {!isInitialized ? (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
           </div>
         ) : (
           <AnimatePresence mode="wait">
-<<<<<<< HEAD
             {activeHabits.length === 0 ? (
-=======
-            {habits.length === 0 ? (
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
               <motion.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-<<<<<<< HEAD
-=======
-                className="h-full"
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
               >
                 <EmptyState onAddHabit={() => handleOpenForm()} />
               </motion.div>
             ) : (
-<<<<<<< HEAD
               <motion.div
                 key="habits"
                 initial={{ opacity: 0 }}
@@ -226,29 +213,6 @@ const Index = () => {
           onSelectTemplate={handleTemplateSelect}
         />
       </PageTransition>
-=======
-              <HabitList
-                key="habits"
-                habits={habits}
-                completedHabits={completedHabits}
-                showSuccessEmoji={showSuccessEmoji}
-                onToggleHabit={toggleHabit}
-                onEditHabit={handleOpenForm}
-                onAddHabit={() => handleOpenForm()}
-              />
-            )}
-          </AnimatePresence>
-        )}
-      </div>
-      
-      <HabitForm
-        isOpen={isFormOpen}
-        onClose={handleCloseForm}
-        onSave={handleSaveHabit}
-        onDelete={editingHabit ? handleDeleteHabit : undefined}
-        initialValues={editingHabit || undefined}
-      />
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
     </Layout>
   );
 };

@@ -1,11 +1,6 @@
-<<<<<<< HEAD
+
 import React, { useState } from "react";
 import { Sprout, PlusCircle, ArrowRight } from "lucide-react";
-=======
-
-import React from "react";
-import { Sprout } from "lucide-react";
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -47,7 +42,6 @@ const EmptyState = ({ onAddHabit }: EmptyStateProps) => {
   };
 
   return (
-<<<<<<< HEAD
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -71,15 +65,6 @@ const EmptyState = ({ onAddHabit }: EmptyStateProps) => {
       
       <p className="text-muted-foreground mb-4 max-w-sm">
         Habits are like seeds that grow stronger with daily care. Start by tracking small, consistent actions.
-=======
-    <div className="flex flex-col items-center justify-center py-6 text-center h-[60vh]">
-      <div className="rounded-full bg-secondary/50 p-4 mb-4">
-        <Sprout className="h-10 w-10 text-primary" />
-      </div>
-      <h2 className="text-xl font-semibold mb-2">Start Your First Habit</h2>
-      <p className="text-muted-foreground mb-2 max-w-xs">
-        Add up to 3 simple habits you want to track daily. Tap to check them off.
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
       </p>
       
       <div className="text-muted-foreground mb-6 flex flex-wrap items-center justify-center gap-1 max-w-xs">
