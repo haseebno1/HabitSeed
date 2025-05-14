@@ -12,10 +12,10 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
@@ -26,37 +26,75 @@ jobs:
         npm --version
     
     - name: Install dependencies
-      run: npm ci --legacy-peer-deps
+      run: npm ci
       continue-on-error: true
     
     - name: Retry install with force
       if: ${{ failure() }}
       run: npm install --force
     
-    - name: Debug node_modules
-      run: |
-        echo "Node modules directory count:"
-        ls -la node_modules | wc -l
-        echo "Checking for key dependencies:"
-        ls -la node_modules/react || echo "React not found"
-        ls -la node_modules/vite || echo "Vite not found"
-    
-    - name: Build
+    - name: Build web app
       run: |
         echo "Starting build process..."
         npm run build
-      
-    - name: Debug directories
-      run: |
-        echo "Working directory:"
-        pwd
-        echo "Directory contents:"
-        ls -la
-        echo "--- Checking dist directory ---"
-        ls -la dist || echo "dist directory not found"
-      
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+    
+    - name: Upload web build artifacts
+      uses: actions/upload-artifact@v4
       with:
-        name: dist
+        name: web-dist
         path: dist/
+        retention-days: 7
+
+  build-android:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      continue-on-error: true
+      
+    - name: Retry install with force if needed
+      if: ${{ failure() }}
+      run: npm install --force
+    
+    - name: Download web build
+      uses: actions/download-artifact@v4
+      with:
+        name: web-dist
+        path: dist
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+    
+    - name: Add and sync Android platform
+      run: |
+        npx cap add android
+        npx cap sync android
+    
+    - name: Build Android app
+      run: |
+        cd android
+        ./gradlew assembleDebug
+    
+    - name: Upload Android APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-debug
+        path: android/app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 7

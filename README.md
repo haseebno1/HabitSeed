@@ -77,9 +77,10 @@ The built files will be in the `dist` directory and can be deployed to any stati
 
 ### Setting Up for Android
 
-1. Build the web app and copy assets to Android:
+1. Build the web app and set up Android platform:
 ```bash
 npm run build
+npx cap add android
 npx cap sync android
 ```
 
@@ -89,6 +90,26 @@ npx cap open android
 ```
 
 3. Run on a device or emulator through Android Studio
+
+### Automated Builds
+
+HabitSeed uses GitHub Actions to automate both web and Android builds:
+
+- Every push to `main` and pull request triggers a build workflow
+- Web artifacts are built and stored as GitHub artifacts
+- Android APK is automatically built and available as an artifact
+- Download the latest build artifacts from the Actions tab in the GitHub repository
+
+### Live Development for Android
+
+For faster development with live-reload:
+
+```bash
+npm run dev
+npx cap run android
+```
+
+This will start a development server and open the app on your connected Android device with live reload enabled.
 
 ## 🛠️ Tech Stack
 

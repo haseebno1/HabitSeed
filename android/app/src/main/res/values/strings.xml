@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HabitSeed</string>
+    <string name="title_activity_main">HabitSeed</string>
+    <string name="package_name">com.habitseed.app</string>
+    <string name="custom_url_scheme">com.habitseed.app</string>
+</resources>
