@@ -4,9 +4,13 @@ import Layout from "@/components/Layout";
 import HabitForm from "@/components/HabitForm";
 import EmptyState from "@/components/EmptyState";
 import HabitList from "@/components/HabitList";
+import SortableHabitList from "@/components/SortableHabitList";
 import { useHabits, Habit } from "@/hooks/useHabits";
+import { useSettings } from "@/hooks/useSettings";
 import { format } from "date-fns";
 import { CalendarCheck } from "lucide-react";
+import AddHabitButton from "@/components/AddHabitButton";
+import ConfettiAnimation from "@/components/ConfettiAnimation";
 
 const Index = () => {
   const {
@@ -17,11 +21,14 @@ const Index = () => {
     addHabit,
     updateHabit,
     deleteHabit,
+    reorderHabits,
     isInitialized
   } = useHabits();
   
+  const { showStreakBadges, maxHabits } = useSettings();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   
   const handleOpenForm = (habit: Habit | null = null) => {
     setEditingHabit(habit);
@@ -44,6 +51,9 @@ const Index = () => {
     } else {
       // Add new habit
       addHabit(habitData);
+      // Show a small confetti animation when adding a new habit
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 2000);
     }
     
     handleCloseForm();
@@ -58,6 +68,11 @@ const Index = () => {
   // Get today's date for display
   const today = new Date();
   const formattedDate = format(today, "EEEE, MMMM d");
+  
+  // Handle reordering of habits
+  const handleReorderHabits = (newHabits: Habit[]) => {
+    reorderHabits(newHabits);
+  };
   
   return (
     <Layout>
@@ -85,15 +100,29 @@ const Index = () => {
               <EmptyState onAddHabit={() => handleOpenForm()} />
             </motion.div>
           ) : (
-            <HabitList
+            <motion.div
               key="habits"
-              habits={habits}
-              completedHabits={completedHabits}
-              showSuccessEmoji={showSuccessEmoji}
-              onToggleHabit={toggleHabit}
-              onEditHabit={handleOpenForm}
-              onAddHabit={() => handleOpenForm()}
-            />
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col gap-3 px-1 py-2 mb-4"
+            >
+              <SortableHabitList
+                habits={habits}
+                completedHabits={completedHabits}
+                showSuccessEmoji={showSuccessEmoji}
+                onToggleHabit={toggleHabit}
+                onEditHabit={handleOpenForm}
+                onReorderHabits={handleReorderHabits}
+                showStreakBadges={showStreakBadges}
+              />
+              
+              {habits.length < maxHabits && (
+                <AddHabitButton onClick={() => handleOpenForm()} />
+              )}
+              
+              <ConfettiAnimation show={showConfetti} />
+            </motion.div>
           )}
         </AnimatePresence>
       )}

@@ -25,6 +25,7 @@ const HabitButton = ({
   const [showMilestone, setShowMilestone] = useState(false);
   const [prevStreak, setPrevStreak] = useState(streak);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [justCompleted, setJustCompleted] = useState(false);
   
   // Show milestone animation when streak reaches a milestone
   useEffect(() => {
@@ -36,6 +37,14 @@ const HabitButton = ({
     setPrevStreak(streak);
   }, [streak, prevStreak]);
 
+  // Reset justCompleted flag after animation completes
+  useEffect(() => {
+    if (justCompleted) {
+      const timer = setTimeout(() => setJustCompleted(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [justCompleted]);
+  
   // Get the appropriate growth emoji based on streak
   const displayEmoji = emoji === "🌱" ? getGrowthStageEmoji(streak, emoji) : emoji;
 
@@ -43,6 +52,7 @@ const HabitButton = ({
   const handleToggle = () => {
     if (!completed) {
       setIsAnimating(true);
+      setJustCompleted(true);
       setTimeout(() => {
         setIsAnimating(false);
       }, 500);
@@ -55,7 +65,8 @@ const HabitButton = ({
       className={cn(
         "habit-button",
         completed && "habit-completed",
-        isAnimating && "animate-pulse-light"
+        isAnimating && "animate-pulse-light",
+        justCompleted && "animate-celebrate"
       )}
       onClick={handleToggle}
       whileTap={{ scale: 0.97 }}
@@ -76,9 +87,20 @@ const HabitButton = ({
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 500,
+                damping: 15,
+                duration: 0.3 
+              }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              <Check className="text-primary h-8 w-8 stroke-[3]" />
+              <Check 
+                className={cn(
+                  "text-primary h-8 w-8 stroke-[3]",
+                  justCompleted && "animate-scale-check"
+                )} 
+              />
             </motion.div>
           )}
         </div>
@@ -109,12 +131,13 @@ const HabitButton = ({
       <AnimatePresence>
         {showMilestone && (
           <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full"
+            initial={{ scale: 0, opacity: 0, y: -10 }}
+            animate={{ scale: 1, opacity: 1, y: -30 }}
+            exit={{ scale: 0, opacity: 0, y: -40 }}
+            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            className="absolute top-0 left-1/2 -translate-x-1/2"
           >
-            <div className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs whitespace-nowrap">
+            <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-full text-sm whitespace-nowrap font-medium shadow-lg">
               🎉 {streak} day streak!
             </div>
           </motion.div>

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -106,7 +105,20 @@ export default {
 				'celebrate': {
 					'0%, 100%': { transform: 'rotate(-3deg) scale(1)' },
 					'50%': { transform: 'rotate(3deg) scale(1.1)' },
-				}
+				},
+				'pop': {
+					'0%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.05)' },
+					'100%': { transform: 'scale(1)' },
+				},
+				'shimmer': {
+					'0%': { backgroundPosition: '-200% 0' },
+					'100%': { backgroundPosition: '200% 0' },
+				},
+				'fade-in-up': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -116,6 +128,9 @@ export default {
 				'scale-check': 'scale-check 0.3s ease-out',
 				'float': 'float 3s ease-in-out infinite',
 				'celebrate': 'celebrate 0.5s ease-in-out',
+				'pop': 'pop 0.3s ease-in-out',
+				'shimmer': 'shimmer 2s infinite linear',
+				'fade-in-up': 'fade-in-up 0.3s ease-out',
 			}
 		}
 	},

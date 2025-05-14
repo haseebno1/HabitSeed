@@ -1,31 +1,34 @@
-# 🌱 Habit Seed
+# 🌱 HabitSeed
 
-A simple, beautiful habit tracker that helps you grow your routines—one small step at a time.
+A beautiful, intuitive habit tracking app designed to help you build consistent routines—one day at a time.
 
-## Features
+## ✨ Features
 
-- 📝 Create and track daily habits
-- 🗓️ View progress in a weekly journal view
-- 📊 See statistics about your habits
-- 🌓 Light/dark mode
-- 📱 Works as a web app or native Android app
-- 🔒 Private and secure - all data stays on your device
+- 📝 Create and track daily habits with customizable colors
+- 🔄 Track streaks and habit completion statistics
+- 🗓️ Journal view to review your weekly progress
+- 📊 Visual statistics to monitor your habit consistency
+- 🌓 Dark/light theme with customizable appearance
+- 💾 Data backup and restore capabilities
+- 📱 Responsive design for mobile and desktop
+- 🔒 Privacy-focused: all data stays on your device
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- React + TypeScript
-- Vite
-- TailwindCSS
-- Capacitor for Android
-- IndexedDB / Capacitor Preferences for storage
+- React 18 with TypeScript
+- Vite for fast builds and development
+- TailwindCSS with shadcn/ui components
+- Lucide for beautiful icons
+- IndexedDB for robust data storage
+- Capacitor for mobile platform compatibility
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js (v16+)
-- npm
-- For Android development:
+- npm or yarn
+- For Android builds:
   - Android Studio
   - JDK 11+
   - Android SDK
@@ -34,8 +37,8 @@ A simple, beautiful habit tracker that helps you grow your routines—one small 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/habit-seed.git
-cd habit-seed
+git clone https://github.com/haseebno1/habit-spark-check-33.git
+cd habit-spark-check-33
 ```
 
 2. Install dependencies:
@@ -43,12 +46,14 @@ cd habit-seed
 npm install
 ```
 
-3. Run the web app in development mode:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-### Building for Web
+Visit `http://localhost:5173` in your browser to start using the app.
+
+### Building for Production
 
 To build the web application:
 
@@ -56,77 +61,71 @@ To build the web application:
 npm run build
 ```
 
-The built files will be in the `dist` directory.
+The built files will be in the `dist` directory and can be deployed to any static hosting service.
 
-## Android Development
+## 📱 Mobile Development
 
-### First-time setup
+### Setting Up for Android
 
-1. Install Android Studio
-2. Install required SDKs through Android Studio's SDK Manager
-3. Set up environment variables:
-   - `ANDROID_HOME` pointing to your Android SDK location
-   - Add platform-tools to your PATH
-
-### Building for Android
-
-1. Build the web app and sync with Android:
+1. Build the web app and copy assets to Android:
 ```bash
-npm run build:android
+npm run build
+npx cap sync android
 ```
 
-2. Open the Android project in Android Studio:
+2. Open in Android Studio:
 ```bash
-npm run open:android
+npx cap open android
 ```
 
-3. Run the Android app on a connected device or emulator:
-```bash
-npm run run:android
-```
+3. Run on a device or emulator through Android Studio
 
-### Manually update Android files
-
-If you've made changes to the Capacitor configuration:
-
-```bash
-npm run sync:android
-```
-
-## Project Structure
+## 📂 Project Structure
 
 ```
-habit-seed/
-├── android/              # Android native files (generated)
+habit-spark/
 ├── src/
-│   ├── components/       # Reusable UI components
-│   ├── hooks/            # Custom React hooks
-│   ├── lib/              # Utility functions and services
-│   ├── pages/            # App pages/screens
-│   └── App.tsx           # Main component
-├── capacitor.config.ts   # Capacitor configuration
+│   ├── components/       # UI components (HabitButton, HabitList, etc.)
+│   ├── hooks/            # Custom React hooks (useHabits, useSettings)
+│   ├── lib/              # Utilities and services (storage, haptics)
+│   ├── pages/            # App pages (Index, Journal, Settings)
+│   └── App.tsx           # Main component with routing
+├── public/               # Static assets
 ├── index.html            # Entry HTML file
 ├── package.json          # Dependencies and scripts
-├── tailwind.config.js    # TailwindCSS configuration
+├── tailwind.config.ts    # TailwindCSS configuration
 ├── tsconfig.json         # TypeScript configuration
-├── vite.config.ts        # Vite configuration
-└── README.md             # Project documentation
+└── vite.config.ts        # Vite configuration
 ```
 
-## Data Storage
+## 💾 Data Management
 
-Habit Seed uses different storage mechanisms depending on the platform:
+HabitSeed stores all your data locally:
 
-- Web app: Uses IndexedDB with localStorage fallback
-- Android app: Uses Capacitor Preferences API
+- Uses IndexedDB for primary storage
+- Provides localStorage fallback for older browsers
+- Ensures your habit data remains private and secure
+- Enables data backup and restore via JSON export/import
 
-All data is stored locally on the user's device for maximum privacy.
+## ⚙️ Settings & Customization
 
-## License
+The app includes a comprehensive settings page:
+
+- **Appearance**: Toggle between light and dark themes
+- **Preferences**: Customize habit limits and behavior
+- **Data Management**: Backup, restore, and reset data
+- **About**: Information about the app and developer
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit pull requests or open issues to suggest improvements.
+
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
+## 👏 Acknowledgments
 
 - Built with [shadcn/ui](https://ui.shadcn.com/) components
 - Icons from [Lucide Icons](https://lucide.dev/)
+- Storage implementations inspired by [Capacitor Storage](https://capacitorjs.com/docs/apis/storage)

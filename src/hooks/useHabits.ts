@@ -118,13 +118,31 @@ export const useHabits = () => {
           )
         );
       }
+      
+      // Show a subtle toast for undoing completion
+      toast("Habit marked as incomplete", {
+        duration: 2000,
+        style: {
+          background: "var(--muted)",
+          color: "var(--muted-foreground)",
+        }
+      });
     } else {
       // Complete the habit
       setCompletedHabits(prev => [...prev, id]);
       
       // Show the success animation
       setShowSuccessEmoji(habit.emoji);
-      setTimeout(() => setShowSuccessEmoji(null), 1000);
+      setTimeout(() => setShowSuccessEmoji(null), 1500);
+      
+      // Haptic feedback on mobile devices if supported
+      try {
+        if (window.navigator && window.navigator.vibrate) {
+          window.navigator.vibrate(50);
+        }
+      } catch (e) {
+        // Ignore errors if vibration isn't supported
+      }
       
       // Update the streak
       const updatedHabits = habits.map(h => {
@@ -137,18 +155,61 @@ export const useHabits = () => {
         if (isMilestoneStreak(newStreak)) {
           setTimeout(() => {
             toast(getMilestoneMessage(newStreak), {
-              duration: 4000,
+              duration: 5000,
+              style: {
+                background: "var(--primary)",
+                color: "var(--primary-foreground)",
+                fontSize: "1.1em"
+              }
             });
-          }, 500);
+          }, 800);
         } else {
-          toast("Habit completed! Keep it up! 🌱");
+          toast(getCompletionMessage(habit.name), {
+            duration: 3000,
+            style: {
+              background: "var(--accent)",
+              color: "var(--accent-foreground)",
+            }
+          });
         }
         
         return { ...h, streaks: newStreak, lastCompleted: today };
       });
       
       setHabits(updatedHabits);
+      
+      // Check if all habits are completed
+      const allCompleted = updatedHabits.every(h => 
+        completedHabits.includes(h.id) || h.id === id
+      );
+      
+      if (allCompleted && updatedHabits.length > 1) {
+        setTimeout(() => {
+          toast("🎉 All habits completed today! Amazing job!", {
+            duration: 5000,
+            style: {
+              background: "var(--primary)",
+              color: "var(--primary-foreground)",
+              fontWeight: "bold",
+              fontSize: "1.1em"
+            }
+          });
+        }, 1000);
+      }
     }
+  };
+  
+  // Get varied completion messages to keep motivation fresh
+  const getCompletionMessage = (habitName: string): string => {
+    const messages = [
+      `${habitName} completed! Keep growing! 🌱`,
+      `Great job on ${habitName}! 👏`,
+      `${habitName} done! You're on a roll! 🔥`,
+      `${habitName} checked off! Keep it up! ✨`,
+      `${habitName} completed! Building momentum! 💪`
+    ];
+    
+    return messages[Math.floor(Math.random() * messages.length)];
   };
   
   const addHabit = async (habitData: { name: string; emoji: string }) => {
@@ -271,16 +332,32 @@ export const useHabits = () => {
     }
   };
   
+  // Add a function to reorder habits
+  const reorderHabits = (newOrder: Habit[]) => {
+    setHabits(newOrder);
+    
+    // Show a subtle indication that order was saved
+    toast("Habit order updated", {
+      duration: 2000,
+      style: {
+        background: "var(--secondary)",
+        color: "var(--secondary-foreground)",
+      }
+    });
+  };
+  
+  // Return all the functions and state for the hook
   return {
     habits,
     completedHabits,
+    isInitialized,
     showSuccessEmoji,
-    toggleHabit,
     addHabit,
     updateHabit,
     deleteHabit,
+    toggleHabit,
+    reorderHabits,
     exportHabits,
-    importHabits,
-    isInitialized
+    importHabits
   };
 };
