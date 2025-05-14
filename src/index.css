@@ -79,10 +79,11 @@
 
 @layer utilities {
   .habit-button {
-    @apply relative flex flex-col items-center justify-center p-4 rounded-2xl 
+    @apply relative flex flex-col items-center justify-center p-5 rounded-2xl 
     bg-white border-2 border-secondary shadow-sm transition-all duration-300
     hover:shadow-md hover:border-primary/30 active:scale-95 w-full
-    dark:bg-card dark:border-border dark:hover:border-primary/30;
+    dark:bg-card dark:border-border dark:hover:border-primary/30
+    min-h-[4.5rem] sm:min-h-[5rem];
   }
   
   .habit-completed {
@@ -91,25 +92,32 @@
   }
 
   .emoji-container {
-    @apply text-4xl flex items-center justify-center;
+    @apply text-4xl flex items-center justify-center min-w-[3rem];
   }
   
   .streak-badge {
-    @apply absolute top-1 right-1 bg-primary text-primary-foreground 
-    text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center;
+    @apply absolute top-2 right-2 bg-primary text-primary-foreground 
+    text-xs font-semibold rounded-full min-w-6 h-6 flex items-center justify-center;
   }
   
   .streak-badge-inline {
     @apply bg-primary text-primary-foreground 
-    text-xs font-semibold rounded-full min-w-6 h-6 px-1.5
-    flex items-center justify-center ml-2;
+    text-xs font-semibold rounded-full min-w-7 h-7 px-2
+    flex items-center justify-center ml-2 text-center;
   }
   
   .add-habit-button {
-    @apply flex items-center justify-center p-5 rounded-2xl border-2 border-dashed 
+    @apply flex items-center justify-center p-6 rounded-2xl border-2 border-dashed 
     border-muted-foreground/30 text-muted-foreground hover:border-primary/30 
     hover:text-primary/70 transition-colors w-full
-    dark:border-muted-foreground/20 dark:hover:border-primary/40;
+    dark:border-muted-foreground/20 dark:hover:border-primary/40
+    min-h-[4.5rem] sm:min-h-[5rem];
+  }
+  
+  .edit-button {
+    @apply absolute bottom-3 right-3 w-9 h-9 rounded-full bg-secondary/80 
+    flex items-center justify-center hover:bg-primary/20 transition-colors
+    text-muted-foreground hover:text-primary;
   }
 }
 
@@ -126,4 +134,19 @@
 /* Safe area insets for mobile devices */
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .streak-badge-inline {
+    @apply min-w-6 h-6 px-1.5 text-xs;
+  }
+  
+  .emoji-container {
+    @apply text-3xl min-w-[2.5rem];
+  }
 }

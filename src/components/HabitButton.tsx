@@ -73,7 +73,7 @@ const HabitButton = ({
       layout
     >
       <div className="flex items-center w-full">
-        <div className="emoji-container relative mr-3">
+        <div className="emoji-container relative mr-4">
           <motion.div
             key={displayEmoji}
             initial={{ scale: streak > prevStreak ? 0.5 : 1 }}
@@ -106,11 +106,11 @@ const HabitButton = ({
         </div>
         
         <div className="flex flex-col flex-1 items-start">
-          <span className="text-sm font-medium text-left truncate max-w-full">
+          <span className="text-base font-medium text-left truncate max-w-full leading-tight">
             {name}
           </span>
           {streak > 0 && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground mt-1">
               {streak} day streak
             </span>
           )}
@@ -132,12 +132,12 @@ const HabitButton = ({
         {showMilestone && (
           <motion.div
             initial={{ scale: 0, opacity: 0, y: -10 }}
-            animate={{ scale: 1, opacity: 1, y: -30 }}
-            exit={{ scale: 0, opacity: 0, y: -40 }}
+            animate={{ scale: 1, opacity: 1, y: -35 }}
+            exit={{ scale: 0, opacity: 0, y: -45 }}
             transition={{ type: "spring", stiffness: 500, damping: 15 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2"
+            className="absolute top-0 left-1/2 -translate-x-1/2 z-10"
           >
-            <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-full text-sm whitespace-nowrap font-medium shadow-lg">
+            <div className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm whitespace-nowrap font-medium shadow-lg">
               🎉 {streak} day streak!
             </div>
           </motion.div>

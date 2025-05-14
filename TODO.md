@@ -7,11 +7,11 @@ This document outlines planned improvements and features for HabitSeed, organize
 ### UI/UX Improvements
 - [x] Add micro-animations for habit completion (confetti, checkmark animations)
 - [x] Implement drag-and-drop for reordering habits
-- [ ] Improve touch targets and spacing for mobile optimization
+- [x] Improve touch targets and spacing for mobile optimization
 - [ ] Create better empty states with suggested actions
 - [x] Add haptic feedback for important interactions
 - [ ] Fix spacing issues on TODAY page while on capacitor build app, fix settings page keeps loading issue
-- [ ] Add a icon to the app and also create the splash screen (@icon.png in root)
+- [x] Add a icon to the app and also create the splash screen (@icon.png in root)
 
 
 ### Core Functionality

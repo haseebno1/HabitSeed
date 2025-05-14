@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Journal from "./pages/Journal";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import SplashScreen from "./components/SplashScreen";
 
 // Define Capacitor interface if not available
 declare global {
@@ -29,6 +30,19 @@ const queryClient = new QueryClient({
 
 // Make App a function component to ensure proper React context
 const App: React.FC = () => {
+  const [splashFinished, setSplashFinished] = useState(false);
+  
+  // Flag for whether we should show our custom splash screen
+  // Only show on first load for web, native uses the OS splash
+  const shouldShowSplash = !window.Capacitor?.isNativePlatform() && 
+    !sessionStorage.getItem('splashShown');
+  
+  // Set the flag in session storage when splash finishes
+  const handleSplashFinish = () => {
+    setSplashFinished(true);
+    sessionStorage.setItem('splashShown', 'true');
+  };
+  
   useEffect(() => {
     // Initialize Android notification channels when app starts
     const setupNotificationChannels = async () => {
@@ -82,8 +96,12 @@ const App: React.FC = () => {
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
           <div className="antialiased min-h-screen">
+            {shouldShowSplash && !splashFinished && (
+              <SplashScreen onFinish={handleSplashFinish} />
+            )}
+            
             <div className="max-w-2xl mx-auto">
-              <main className="flex flex-col min-h-screen">
+              <main className={`flex flex-col min-h-screen ${shouldShowSplash && !splashFinished ? 'opacity-0' : 'opacity-100 transition-opacity duration-300'}`}>
                 <BrowserRouter>
                   <Routes>
                     <Route path="/" element={<Index />} />

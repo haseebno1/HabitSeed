@@ -18,6 +18,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
+  const isNative = typeof window !== 'undefined' && window.Capacitor?.isNativePlatform();
 
   useEffect(() => {
     // Try to use Capacitor StatusBar plugin if available
@@ -40,10 +41,10 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="min-h-screen flex flex-col max-w-md mx-auto pt-safe pb-safe">
-      {/* Android status bar spacer */}
-      <div className="h-7 bg-background" id="status-bar-spacer"></div>
+      {/* Android status bar spacer - only for native app */}
+      {isNative && <div className="h-7 bg-background" id="status-bar-spacer"></div>}
       
-      <header className="py-4 flex items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm px-4">
+      <header className="py-4 flex items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm px-5">
         <h1 className="text-2xl font-bold flex items-center">
           <span className="text-primary mr-1">Habit</span>Seed
           <span className="ml-1 text-xl">🌱</span>
@@ -51,7 +52,7 @@ const Layout = ({ children }: LayoutProps) => {
         {location.pathname !== "/settings" && <ThemeToggle />}
       </header>
       
-      <main className="flex-1 flex flex-col px-4">
+      <main className="flex-1 flex flex-col px-4 py-2">
         {children}
       </main>
       
@@ -59,39 +60,39 @@ const Layout = ({ children }: LayoutProps) => {
         <nav className="flex justify-around max-w-md mx-auto">
           <Link 
             to="/" 
-            className={`p-3 flex flex-col items-center ${
+            className={`p-4 flex flex-col items-center ${
               location.pathname === "/" ? "text-primary" : "text-muted-foreground"
             }`}
             aria-label="Today"
           >
-            <Home className="h-5 w-5 mb-1" />
-            <span className="text-xs">Today</span>
+            <Home className="h-6 w-6 mb-1" />
+            <span className="text-xs font-medium">Today</span>
           </Link>
           <Link 
             to="/journal" 
-            className={`p-3 flex flex-col items-center ${
+            className={`p-4 flex flex-col items-center ${
               location.pathname === "/journal" ? "text-primary" : "text-muted-foreground"
             }`}
             aria-label="Journal"
           >
-            <CalendarCheck className="h-5 w-5 mb-1" />
-            <span className="text-xs">Journal</span>
+            <CalendarCheck className="h-6 w-6 mb-1" />
+            <span className="text-xs font-medium">Journal</span>
           </Link>
           <Link 
             to="/settings" 
-            className={`p-3 flex flex-col items-center ${
+            className={`p-4 flex flex-col items-center ${
               location.pathname === "/settings" ? "text-primary" : "text-muted-foreground"
             }`}
             aria-label="Settings"
           >
-            <Settings className="h-5 w-5 mb-1" />
-            <span className="text-xs">Settings</span>
+            <Settings className="h-6 w-6 mb-1" />
+            <span className="text-xs font-medium">Settings</span>
           </Link>
         </nav>
       </footer>
       
       {/* Add extra space at the bottom to account for fixed footer */}
-      <div className="h-16"></div>
+      <div className="h-20"></div>
     </div>
   );
 };

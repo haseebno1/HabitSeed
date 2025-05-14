@@ -73,12 +73,11 @@ const HabitList = ({
           
           <button
             onClick={() => onEditHabit(habit)}
-            className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-secondary/80 
-            flex items-center justify-center hover:bg-primary/20 transition-colors"
+            className="edit-button"
             aria-label="Edit habit"
           >
             <span className="sr-only">Edit</span>
-            <span className="text-xs">✏️</span>
+            <span className="text-sm">✏️</span>
           </button>
           
           <SuccessAnimation 

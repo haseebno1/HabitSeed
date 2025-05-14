@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="248" fill="#16a34a" />
+  <circle cx="256" cy="256" r="224" fill="#15803d" />
+  
+  <!-- Seed/Plant Design -->
+  <path d="M256 120C200 120 155 165 155 240C155 315 215 380 256 400C297 380 357 315 357 240C357 165 312 120 256 120Z" fill="#f0fdf4" />
+  
+  <!-- Leaf details -->
+  <path d="M256 180C230 180 210 205 210 245C210 285 240 320 256 330C272 320 302 285 302 245C302 205 282 180 256 180Z" fill="#22c55e" />
+  <path d="M256 220C245 220 235 235 235 255C235 275 247 290 256 295C265 290 277 275 277 255C277 235 267 220 256 220Z" fill="#86efac" />
+  
+  <!-- Stem -->
+  <rect x="248" y="320" width="16" height="100" fill="#15803d" />
+  
+  <!-- Small roots at bottom -->
+  <path d="M248 420L220 450" stroke="#15803d" stroke-width="8" stroke-linecap="round" />
+  <path d="M264 420L292 450" stroke="#15803d" stroke-width="8" stroke-linecap="round" />
+  <path d="M248 440L228 460" stroke="#15803d" stroke-width="8" stroke-linecap="round" />
+  <path d="M264 440L284 460" stroke="#15803d" stroke-width="8" stroke-linecap="round" />
+</svg> 

@@ -1,0 +1,31 @@
+<svg width="2732" height="2732" viewBox="0 0 2732 2732" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light background -->
+  <rect width="2732" height="2732" fill="#f8fafc" />
+  
+  <!-- Center logo and text -->
+  <g transform="translate(1366, 1366) scale(2.5)">
+    <!-- Background Circle -->
+    <circle cx="0" cy="0" r="90" fill="#16a34a" />
+    <circle cx="0" cy="0" r="80" fill="#15803d" />
+    
+    <!-- Seed/Plant Design -->
+    <path d="M0 -50C-20 -50 -40 -30 -40 0C-40 30 -15 60 0 70C15 60 40 30 40 0C40 -30 20 -50 0 -50Z" fill="#f0fdf4" />
+    
+    <!-- Leaf details -->
+    <path d="M0 -30C-10 -30 -18 -20 -18 0C-18 20 -5 35 0 40C5 35 18 20 18 0C18 -20 10 -30 0 -30Z" fill="#22c55e" />
+    <path d="M0 -15C-5 -15 -8 -5 -8 5C-8 15 -2 22 0 25C2 22 8 15 8 5C8 -5 5 -15 0 -15Z" fill="#86efac" />
+    
+    <!-- Stem -->
+    <rect x="-3" y="40" width="6" height="30" fill="#15803d" />
+    
+    <!-- Small roots at bottom -->
+    <path d="M-3 70L-10 80" stroke="#15803d" stroke-width="3" stroke-linecap="round" />
+    <path d="M3 70L10 80" stroke="#15803d" stroke-width="3" stroke-linecap="round" />
+    <path d="M-3 75L-8 85" stroke="#15803d" stroke-width="3" stroke-linecap="round" />
+    <path d="M3 75L8 85" stroke="#15803d" stroke-width="3" stroke-linecap="round" />
+  </g>
+  
+  <!-- App name -->
+  <text x="1366" y="1750" font-family="Arial, sans-serif" font-weight="700" font-size="96" text-anchor="middle" fill="#15803d">HabitSeed</text>
+  <text x="1366" y="1830" font-family="Arial, sans-serif" font-size="48" text-anchor="middle" fill="#64748b">Grow your habits, one day at a time</text>
+</svg> 
