@@ -12,6 +12,13 @@ export function getToday(): string {
 }
 
 /**
+ * Check if the current environment is a mobile device
+ */
+export function isMobile(): boolean {
+  return typeof window !== 'undefined' && window.Capacitor?.isNativePlatform() === true;
+}
+
+/**
  * Determines the growth stage emoji based on streak count
  */
 export function getGrowthStageEmoji(streak: number, baseEmoji: string): string {

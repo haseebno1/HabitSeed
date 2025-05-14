@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -8,6 +9,7 @@ import Index from "./pages/Index";
 import Journal from "./pages/Journal";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import SettingsProvider from "./hooks/useSettings";
 
 // Define Capacitor interface if not available
 declare global {
@@ -29,7 +31,7 @@ const queryClient = new QueryClient({
 
 // Make App a function component to ensure proper React context
 const App: React.FC = () => {
-  useEffect(() => {
+  React.useEffect(() => {
     // Initialize Android notification channels when app starts
     const setupNotificationChannels = async () => {
       try {
@@ -80,24 +82,26 @@ const App: React.FC = () => {
   return (
     <React.StrictMode>
       <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <div className="antialiased min-h-screen">
-            <div className="max-w-2xl mx-auto">
-              <main className="flex flex-col min-h-screen">
-                <BrowserRouter>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/journal" element={<Journal />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </BrowserRouter>
-              </main>
+        <SettingsProvider>
+          <QueryClientProvider client={queryClient}>
+            <div className="antialiased min-h-screen">
+              <div className="max-w-2xl mx-auto">
+                <main className="flex flex-col min-h-screen">
+                  <BrowserRouter>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/journal" element={<Journal />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </BrowserRouter>
+                </main>
+              </div>
             </div>
-          </div>
-          <Sonner />
-          <Toaster />
-        </QueryClientProvider>
+            <Sonner />
+            <Toaster />
+          </QueryClientProvider>
+        </SettingsProvider>
       </ThemeProvider>
     </React.StrictMode>
   );
