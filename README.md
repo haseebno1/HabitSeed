@@ -36,7 +36,7 @@ HabitSeed is a beautiful, intuitive habit tracking app designed to help you buil
 
 ### Prerequisites
 
-- Node.js (v16+)
+- Node.js (v20+)
 - npm or yarn
 - For Android builds:
   - Android Studio
