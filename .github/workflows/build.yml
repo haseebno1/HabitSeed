@@ -20,7 +20,12 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
+    
+    - name: Debug node_modules
+      run: |
+        echo "Node modules directory:"
+        ls -la node_modules | wc -l
     
     - name: Build
       run: npm run build
