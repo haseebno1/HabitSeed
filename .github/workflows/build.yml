@@ -32,6 +32,11 @@ jobs:
     - name: List installed packages
       run: npm list --depth=0
     
+    - name: Clean build directory
+      run: |
+        rm -rf dist
+        rm -rf android
+    
     - name: Build web app
       run: |
         echo "Starting build process..."
@@ -84,23 +89,46 @@ jobs:
     
     - name: Add and sync Android platform
       run: |
+        # Remove Android directory if it exists
+        if [ -d "android" ]; then
+          echo "Removing existing Android directory"
+          rm -rf android
+        fi
+        
+        # Add Android platform
         npx cap add android
+        
+        # Sync with the web build
         npx cap sync android
       env:
         CI: false
     
     - name: Debug Android directory
       run: |
-        ls -la android
-        ls -la android/app || echo "app directory not found"
+        echo "Content of current directory:"
+        ls -la
+        echo "Content of dist directory:"
+        ls -la dist || echo "dist directory not found"
     
     - name: Set gradlew permissions
-      run: chmod +x android/gradlew
+      run: |
+        if [ -f "android/gradlew" ]; then
+          chmod +x android/gradlew
+          echo "Set execute permission on gradlew"
+        else
+          echo "gradlew file not found, this is expected if Android platform failed to add"
+          exit 1
+        fi
     
     - name: Build Android app
       run: |
-        cd android
-        ./gradlew assembleDebug --stacktrace
+        if [ -d "android" ]; then
+          cd android
+          ./gradlew assembleDebug --stacktrace
+        else
+          echo "Android directory not found, cannot build"
+          exit 1
+        fi
     
     - name: Upload Android APK
       uses: actions/upload-artifact@v4
