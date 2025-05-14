@@ -221,6 +221,45 @@ jobs:
           echo "android.useAndroidX=true" >> android/gradle.properties
         fi
     
+    - name: Update Android app build.gradle for CI
+      run: |
+        if [ -f "android/app/build.gradle" ]; then
+          # Add multiDexEnabled true to fix the mergeExtDexDebug issue
+          sed -i '/defaultConfig {/a \\        multiDexEnabled true' android/app/build.gradle
+          
+          # Add multidex dependency
+          sed -i '/dependencies {/a \\    implementation "androidx.multidex:multidex:2.0.1"' android/app/build.gradle
+          
+          echo "Updated app/build.gradle:"
+          cat android/app/build.gradle
+        fi
+    
+    - name: Configure MultiDex support
+      run: |
+        mkdir -p android/app/src/main/java/com/habitseed/app
+        
+        # Create the Application class file
+        cat << 'EOF' > android/app/src/main/java/com/habitseed/app/MainApplication.java
+package com.habitseed.app;
+
+import android.app.Application;
+import androidx.multidex.MultiDexApplication;
+
+public class MainApplication extends MultiDexApplication {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+}
+EOF
+        
+        # Update AndroidManifest.xml if it exists
+        if [ -f "android/app/src/main/AndroidManifest.xml" ]; then
+          # Add the application name attribute
+          sed -i 's/<application /<application android:name="com.habitseed.app.MainApplication" /g' android/app/src/main/AndroidManifest.xml
+          echo "Updated AndroidManifest.xml"
+        fi
+    
     - name: Build Android app
       run: |
         if [ -d "android" ]; then
@@ -236,6 +275,35 @@ jobs:
             --stacktrace \
             --warning-mode all \
             assembleDebug
+          
+          BUILD_RESULT=$?
+          
+          # If build failed, display the problems report if available
+          if [ $BUILD_RESULT -ne 0 ]; then
+            echo "Build failed. Checking for problems report..."
+            REPORT_DIR="build/reports/problems"
+            if [ -d "$REPORT_DIR" ]; then
+              echo "Problems report directory found. Contents:"
+              ls -la "$REPORT_DIR"
+              if [ -f "$REPORT_DIR/problems-report.html" ]; then
+                echo "Problems report content (first 200 lines):"
+                head -n 200 "$REPORT_DIR/problems-report.html"
+              fi
+            fi
+            
+            # Also check app directory reports
+            APP_REPORT_DIR="app/build/reports/problems"
+            if [ -d "$APP_REPORT_DIR" ]; then
+              echo "App problems report directory found. Contents:"
+              ls -la "$APP_REPORT_DIR"
+              if [ -f "$APP_REPORT_DIR/problems-report.html" ]; then
+                echo "App problems report content (first 200 lines):"
+                head -n 200 "$APP_REPORT_DIR/problems-report.html"
+              fi
+            fi
+            
+            exit $BUILD_RESULT
+          fi
         else
           echo "Android directory not found, cannot build"
           exit 1
