@@ -80,6 +80,7 @@ The built files will be in the `dist` directory and can be deployed to any stati
 1. Build the web app and copy assets to Android:
 ```bash
 npm run build
+npx cap add android
 npx cap sync android
 ```
 
