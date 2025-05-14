@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -12,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import SplashScreen from "./components/SplashScreen";
 import OnboardingModal from "./components/OnboardingModal";
 import DevTools from "./pages/DevTools";
+import { SettingsProvider } from "@/hooks/useSettings";
 
 // Define QueryClient outside component to prevent recreating on render
 const queryClient = new QueryClient({
@@ -114,7 +116,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <ThemeProvider storageKey="vite-ui-theme">
+    <ThemeProvider>
       <SettingsProvider>
         <QueryClientProvider client={queryClient}>
           <div className="antialiased min-h-screen">

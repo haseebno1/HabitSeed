@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-=======
 
-import React from "react";
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Habit } from "@/hooks/useHabits";
 import { useSettings } from "@/hooks/useSettings";

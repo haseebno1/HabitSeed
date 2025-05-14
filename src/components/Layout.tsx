@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-=======
 
-import React, { useEffect } from "react";
->>>>>>> eae7839bab8c318ed91a374c5239baeeb73a49e4
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, CalendarCheck, Settings } from "lucide-react";
 import { ThemeToggle } from "./ThemeProvider";
