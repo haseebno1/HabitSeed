@@ -1,27 +1,62 @@
 import React from "react";
-import { Plus } from "lucide-react";
-import { motion } from "framer-motion";
+import { Plus, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import FeatureTooltip from "./FeatureTooltip";
 
 interface AddHabitButtonProps {
   onClick: () => void;
-  disabled?: boolean;
+  onTemplateClick: () => void;
 }
 
-const AddHabitButton = ({ onClick, disabled = false }: AddHabitButtonProps) => {
+const AddHabitButton: React.FC<AddHabitButtonProps> = ({ onClick, onTemplateClick }) => {
   return (
-    <motion.button 
-      className="add-habit-button"
-      onClick={onClick}
-      disabled={disabled}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
-      aria-label="Add new habit"
-    >
-      <div className="flex items-center justify-center">
-        <Plus className="h-5 w-5 mr-2" />
-        <span className="text-sm font-medium">Add New Habit</span>
-      </div>
-    </motion.button>
+    <Popover>
+      <FeatureTooltip 
+        id="add-habit-options"
+        title="New Feature!"
+        description="You can now create custom habits or choose from templates for quick setup."
+        position="top"
+      >
+        <PopoverTrigger asChild>
+          <Button
+            className="w-full flex items-center justify-center gap-2 py-6"
+            variant="outline"
+          >
+            <Plus className="h-5 w-5" />
+            <span>Add Habit</span>
+          </Button>
+        </PopoverTrigger>
+      </FeatureTooltip>
+      
+      <PopoverContent className="w-60 p-0" align="center">
+        <div className="grid grid-cols-1 divide-y">
+          <Button
+            variant="ghost"
+            className="flex items-center justify-start gap-2 py-6 rounded-none rounded-t-md px-4"
+            onClick={onClick}
+          >
+            <Plus className="h-5 w-5" />
+            <div className="text-left">
+              <div className="font-medium">Custom Habit</div>
+              <div className="text-xs text-muted-foreground">Create your own habit</div>
+            </div>
+          </Button>
+          
+          <Button
+            variant="ghost"
+            className="flex items-center justify-start gap-2 py-6 rounded-none rounded-b-md px-4"
+            onClick={onTemplateClick}
+          >
+            <Sparkles className="h-5 w-5" />
+            <div className="text-left">
+              <div className="font-medium">Use Template</div>
+              <div className="text-xs text-muted-foreground">Choose from preset habits</div>
+            </div>
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };
 

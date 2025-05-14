@@ -1,17 +1,22 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
+import { applyThemeColors, getThemeById } from "@/lib/themes";
 
-type Theme = 'light' | 'dark';
+export type Theme = 'default' | 'ocean' | 'sunset' | 'nature';
+export type ColorMode = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  colorMode: ColorMode;
+  setTheme: (theme: Theme) => void;
+  toggleColorMode: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: 'light',
-  toggleTheme: () => {},
+  theme: 'default',
+  colorMode: 'light',
+  setTheme: () => {},
+  toggleColorMode: () => {},
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -21,10 +26,15 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Get initial theme from localStorage or system preference
-  const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) return savedTheme;
+  // Get initial theme and color mode from localStorage or system preference
+  const [theme, setThemeState] = useState<Theme>(() => {
+    const savedTheme = localStorage.getItem('themeId') as Theme;
+    return savedTheme || 'default';
+  });
+  
+  const [colorMode, setColorMode] = useState<ColorMode>(() => {
+    const savedMode = localStorage.getItem('colorMode') as ColorMode;
+    if (savedMode) return savedMode;
     
     // Check for system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -34,43 +44,53 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return 'light';
   });
 
-  // Toggle theme function
-  const toggleTheme = () => {
-    setTheme(prevTheme => {
-      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
-      return newTheme;
+  // Set theme function
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+    localStorage.setItem('themeId', newTheme);
+    applyThemeColors(newTheme, colorMode === 'dark');
+  };
+
+  // Toggle color mode function
+  const toggleColorMode = () => {
+    setColorMode(prevMode => {
+      const newMode = prevMode === 'light' ? 'dark' : 'light';
+      localStorage.setItem('colorMode', newMode);
+      return newMode;
     });
   };
 
-  // Apply theme class to document
+  // Apply theme class and colors to document
   useEffect(() => {
     const root = window.document.documentElement;
     
-    if (theme === 'dark') {
+    if (colorMode === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-  }, [theme]);
+    
+    // Apply the theme colors
+    applyThemeColors(theme, colorMode === 'dark');
+  }, [theme, colorMode]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, colorMode, setTheme, toggleColorMode }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
 export const ThemeToggle: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { colorMode, toggleColorMode } = useTheme();
   
   return (
     <button 
-      onClick={toggleTheme}
+      onClick={toggleColorMode}
       className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
+      {colorMode === 'light' ? (
         <Moon className="h-5 w-5 text-muted-foreground" />
       ) : (
         <Sun className="h-5 w-5 text-muted-foreground" />

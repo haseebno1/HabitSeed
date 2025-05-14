@@ -3,12 +3,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Journal from "./pages/Journal";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import SplashScreen from "./components/SplashScreen";
+import OnboardingModal from "./components/OnboardingModal";
+import DevTools from "./pages/DevTools";
 
 // Define Capacitor interface if not available
 declare global {
@@ -28,9 +31,27 @@ const queryClient = new QueryClient({
   },
 });
 
+// AnimatedRoutes component to handle route transitions
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Index />} />
+        <Route path="/journal" element={<Journal />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/dev" element={<DevTools />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 // Make App a function component to ensure proper React context
 const App: React.FC = () => {
   const [splashFinished, setSplashFinished] = useState(false);
+  const [onboardingComplete, setOnboardingComplete] = useState(true);
   
   // Flag for whether we should show our custom splash screen
   // Only show on first load for web, native uses the OS splash
@@ -41,6 +62,14 @@ const App: React.FC = () => {
   const handleSplashFinish = () => {
     setSplashFinished(true);
     sessionStorage.setItem('splashShown', 'true');
+    
+    // Check if user has completed onboarding
+    const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
+    setOnboardingComplete(!!hasSeenOnboarding);
+  };
+  
+  const handleOnboardingComplete = () => {
+    setOnboardingComplete(true);
   };
   
   useEffect(() => {
@@ -100,19 +129,15 @@ const App: React.FC = () => {
               <SplashScreen onFinish={handleSplashFinish} />
             )}
             
-            <div className="max-w-2xl mx-auto">
+            <div className="h-full">
               <main className={`flex flex-col min-h-screen ${shouldShowSplash && !splashFinished ? 'opacity-0' : 'opacity-100 transition-opacity duration-300'}`}>
                 <BrowserRouter>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/journal" element={<Journal />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <AnimatedRoutes />
                 </BrowserRouter>
               </main>
             </div>
           </div>
+          <OnboardingModal onComplete={handleOnboardingComplete} />
           <Sonner />
           <Toaster />
         </QueryClientProvider>

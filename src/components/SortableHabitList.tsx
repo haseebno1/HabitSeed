@@ -17,7 +17,7 @@ import {
   useSortable
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Habit } from '@/hooks/useHabits';
+import { Habit, HabitCompletion, CompletionValue } from '@/hooks/useHabits';
 import HabitButton from './HabitButton';
 import SuccessAnimation from './SuccessAnimation';
 import { GripVertical } from 'lucide-react';
@@ -26,8 +26,13 @@ import { GripVertical } from 'lucide-react';
 interface SortableHabitItemProps {
   habit: Habit;
   completed: boolean;
+  completionValue: CompletionValue | null;
+  skipped: boolean;
   showSuccessEmoji: string | null;
   onToggle: (id: string) => void;
+  onUpdateValue: (id: string, value: CompletionValue) => void;
+  onSkip: (id: string) => void;
+  onUnskip: (id: string) => void;
   onEdit: (habit: Habit) => void;
   showStreakBadge: boolean;
 }
@@ -35,8 +40,13 @@ interface SortableHabitItemProps {
 const SortableHabitItem = ({ 
   habit, 
   completed, 
+  completionValue,
+  skipped,
   showSuccessEmoji,
   onToggle, 
+  onUpdateValue,
+  onSkip,
+  onUnskip,
   onEdit,
   showStreakBadge
 }: SortableHabitItemProps) => {
@@ -83,7 +93,15 @@ const SortableHabitItem = ({
             streak={habit.streaks}
             completed={completed}
             onToggle={onToggle}
+            onUpdateValue={onUpdateValue}
             showStreakBadge={showStreakBadge}
+            trackingType={habit.trackingType}
+            targetValue={habit.targetValue}
+            unit={habit.unit}
+            completionValue={completionValue}
+            notes={habit.notes}
+            onSkip={onSkip}
+            onUnskip={onUnskip}
           />
         </div>
       </div>
@@ -108,9 +126,12 @@ const SortableHabitItem = ({
 // Main sortable list component
 interface SortableHabitListProps {
   habits: Habit[];
-  completedHabits: string[];
+  completedHabits: HabitCompletion[];
   showSuccessEmoji: string | null;
   onToggleHabit: (id: string) => void;
+  onUpdateHabitValue: (id: string, value: CompletionValue) => void;
+  onSkipHabit: (id: string) => void;
+  onUnskipHabit: (id: string) => void;
   onEditHabit: (habit: Habit) => void;
   onReorderHabits: (newOrder: Habit[]) => void;
   showStreakBadges: boolean;
@@ -121,6 +142,9 @@ const SortableHabitList = ({
   completedHabits,
   showSuccessEmoji,
   onToggleHabit,
+  onUpdateHabitValue,
+  onSkipHabit,
+  onUnskipHabit,
   onEditHabit,
   onReorderHabits,
   showStreakBadges
@@ -142,6 +166,24 @@ const SortableHabitList = ({
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  // Helper to check if a habit is completed
+  const isHabitCompleted = (habitId: string): boolean => {
+    return completedHabits.some(h => h.habitId === habitId);
+  };
+  
+  // Helper to get the completion value for a habit
+  const getCompletionValue = (habitId: string): CompletionValue | null => {
+    const completion = completedHabits.find(h => h.habitId === habitId);
+    return completion ? completion.value : null;
+  };
+  
+  // Helper to check if a habit is skipped for today
+  const isHabitSkipped = (habitId: string): boolean => {
+    const habit = habits.find(h => h.id === habitId);
+    const today = new Date().toISOString().split('T')[0];
+    return !!habit?.skippedDates?.includes(today);
+  };
 
   // Handle the end of a drag event
   const handleDragEnd = (event: DragEndEvent) => {
@@ -172,9 +214,14 @@ const SortableHabitList = ({
           <SortableHabitItem
             key={habit.id}
             habit={habit}
-            completed={completedHabits.includes(habit.id)}
+            completed={isHabitCompleted(habit.id)}
+            completionValue={getCompletionValue(habit.id)}
+            skipped={isHabitSkipped(habit.id)}
             showSuccessEmoji={showSuccessEmoji}
             onToggle={onToggleHabit}
+            onUpdateValue={onUpdateHabitValue}
+            onSkip={onSkipHabit}
+            onUnskip={onUnskipHabit}
             onEdit={onEditHabit}
             showStreakBadge={showStreakBadges}
           />

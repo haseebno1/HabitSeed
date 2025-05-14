@@ -4,62 +4,47 @@
 
 @layer base {
   :root {
+    /* Default variables - these will be overridden by the theme system */
     --background: 60 25% 98%;
     --foreground: 120 4% 10%;
-
     --card: 0 0% 100%;
     --card-foreground: 120 4% 10%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 120 4% 10%;
-
     --primary: 142 72% 29%;
     --primary-foreground: 60 30% 98%;
-
     --secondary: 95 75% 88%;
     --secondary-foreground: 120 4% 10%;
-
     --muted: 60 15% 93%;
     --muted-foreground: 120 3% 46%;
-
     --accent: 120 67% 90%;
     --accent-foreground: 120 4% 10%;
-
     --destructive: 0 72% 51%;
     --destructive-foreground: 60 30% 98%;
-
     --border: 120 5% 88%;
     --input: 120 5% 88%;
     --ring: 142 72% 39%;
-
     --radius: 0.75rem;
   }
 
+  /* Dark mode defaults - these will be overridden by the theme system */
   .dark {
     --background: 120 15% 8%;
     --foreground: 60 30% 96%;
-
     --card: 120 15% 11%;
     --card-foreground: 60 30% 96%;
-
     --popover: 120 15% 10%;
     --popover-foreground: 60 30% 96%;
-
     --primary: 142 50% 45%;
     --primary-foreground: 120 5% 10%;
-
     --secondary: 95 20% 20%;
     --secondary-foreground: 60 30% 96%;
-
     --muted: 120 15% 15%;
     --muted-foreground: 60 10% 65%;
-
     --accent: 120 20% 20%;
     --accent-foreground: 60 30% 96%;
-
     --destructive: 0 72% 51%;
     --destructive-foreground: 60 30% 96%;
-
     --border: 120 15% 20%;
     --input: 120 15% 20%;
     --ring: 142 50% 45%;
@@ -119,6 +104,11 @@
     flex items-center justify-center hover:bg-primary/20 transition-colors
     text-muted-foreground hover:text-primary;
   }
+  
+  /* Theme preview utility classes */
+  .theme-color-preview {
+    @apply h-16 rounded-md shadow-sm border border-border/50;
+  }
 }
 
 /* Animation for subtle pulse effect */
@@ -150,3 +140,4 @@
     @apply text-3xl min-w-[2.5rem];
   }
 }
+  .habit-skipped { @apply border-muted/80 bg-muted/30 dark:bg-muted/10 dark:border-muted/40; }

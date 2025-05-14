@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, CalendarCheck, Settings } from "lucide-react";
 import { ThemeToggle } from "./ThemeProvider";
@@ -18,18 +18,28 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
-  const isNative = typeof window !== 'undefined' && window.Capacitor?.isNativePlatform();
-
+  const [isNative, setIsNative] = useState(false);
+  
   useEffect(() => {
+    // Check if running in Capacitor
+    setIsNative(typeof window !== 'undefined' && !!window.Capacitor?.isNativePlatform());
+    
     // Try to use Capacitor StatusBar plugin if available
     const initStatusBar = async () => {
       try {
         if (window.Capacitor?.isNativePlatform()) {
           const { StatusBar, Style } = await import('@capacitor/status-bar');
+          // Set status bar style based on theme
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           StatusBar.setOverlaysWebView({ overlay: false });
-          StatusBar.setBackgroundColor({ color: '#ffffff' });
-          // Use dark text for light theme status bar
-          StatusBar.setStyle({ style: Style.Dark });
+          StatusBar.setBackgroundColor({ color: prefersDark ? '#121212' : '#ffffff' });
+          StatusBar.setStyle({ style: prefersDark ? Style.Light : Style.Dark });
+          
+          // Listen for theme changes
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            StatusBar.setBackgroundColor({ color: e.matches ? '#121212' : '#ffffff' });
+            StatusBar.setStyle({ style: e.matches ? Style.Light : Style.Dark });
+          });
         }
       } catch (e) {
         console.log('StatusBar plugin not available', e);
@@ -40,24 +50,33 @@ const Layout = ({ children }: LayoutProps) => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto pt-safe pb-safe">
+    <div className="min-h-screen flex flex-col">
       {/* Android status bar spacer - only for native app */}
-      {isNative && <div className="h-7 bg-background" id="status-bar-spacer"></div>}
+      {isNative && (
+        <div className="h-[env(safe-area-inset-top)] bg-background min-h-[28px]" id="status-bar-spacer"></div>
+      )}
       
-      <header className="py-4 flex items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm px-5">
-        <h1 className="text-2xl font-bold flex items-center">
-          <span className="text-primary mr-1">Habit</span>Seed
-          <span className="ml-1 text-xl">🌱</span>
-        </h1>
-        {location.pathname !== "/settings" && <ThemeToggle />}
+      {/* Consistent header width */}
+      <header className="py-4 flex items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+        <div className="w-full max-w-md mx-auto px-4 flex items-center justify-between">
+          <h1 className="text-2xl font-bold flex items-center">
+            <span className="text-primary mr-1">Habit</span>Seed
+            <span className="ml-1 text-xl">🌱</span>
+          </h1>
+          {location.pathname !== "/settings" && <ThemeToggle />}
+        </div>
       </header>
       
-      <main className="flex-1 flex flex-col px-4 py-2">
-        {children}
+      {/* Consistent content width */}
+      <main className="flex-1 flex flex-col mb-20 w-full">
+        <div className="w-full max-w-md mx-auto px-4 py-4">
+          {children}
+        </div>
       </main>
       
-      <footer className="py-2 border-t mt-auto bg-background fixed bottom-0 left-0 right-0 z-10">
-        <nav className="flex justify-around max-w-md mx-auto">
+      {/* Consistent footer width */}
+      <footer className="py-2 border-t bg-background fixed bottom-0 left-0 right-0 z-10 h-[calc(64px+env(safe-area-inset-bottom))]">
+        <nav className="flex justify-around max-w-md mx-auto px-2">
           <Link 
             to="/" 
             className={`p-4 flex flex-col items-center ${
@@ -90,9 +109,6 @@ const Layout = ({ children }: LayoutProps) => {
           </Link>
         </nav>
       </footer>
-      
-      {/* Add extra space at the bottom to account for fixed footer */}
-      <div className="h-20"></div>
     </div>
   );
 };

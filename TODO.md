@@ -10,44 +10,44 @@ This document outlines planned improvements and features for HabitSeed, organize
 - [x] Improve touch targets and spacing for mobile optimization
 - [x] Create better empty states with suggested actions
 - [x] Add haptic feedback for important interactions
-- [ ] Fix spacing issues on TODAY page while on capacitor build app, fix settings page keeps loading issue
+- [x] Fix spacing issues on TODAY page while on capacitor build app, fix settings page keeps loading issue
 - [x] Add a icon to the app and also create the splash screen (@icon.png in root)
 
 
 ### Core Functionality
-- [ ] Implement flexible habit tracking (quantity, duration, rating scales)
-- [ ] Add support for different frequency habits (daily, weekly, monthly, custom)
-- [ ] Create "skip day" functionality that doesn't break streaks
-- [ ] Add notes/reflection field to habits
-- [ ] Improve statistics visualization with more detailed graphs
+- [x] Implement flexible habit tracking (quantity, duration, rating scales)
+- [x] Add support for different frequency habits (daily, weekly, monthly, custom)
+- [x] Create "skip day" functionality that doesn't break streaks
+- [x] Add notes/reflection field to habits
+- [x] Improve statistics visualization with more detailed graphs
 
 ### Performance
-- [ ] Optimize IndexedDB queries for faster loading
-- [ ] Implement proper data caching mechanisms
-- [ ] Reduce initial load time
+- [x] Optimize IndexedDB queries for faster loading
+- [x] Implement proper data caching mechanisms
+- [x] Reduce initial load time
 
 ## 🌱 Medium Priority
 
 ### Enhanced Features
-- [ ] Implement basic notification/reminder system
-- [ ] Create habit templates for quick-adding common habits
+- [x] Implement basic notification/reminder system
+- [x] Create habit templates for quick-adding common habits
 - [ ] Add habit categories and tagging
 - [ ] Implement habit archiving instead of permanent deletion
 - [ ] Add calendar view for habit tracking
 - [ ] Create weekly and monthly summary reports
 
 ### UI Refinements
-- [ ] Design and implement additional themes
-- [ ] Add custom habit icons/emoji selection
-- [ ] Improve transition animations between screens
-- [ ] Create a more comprehensive onboarding experience
-- [ ] Implement contextual tooltips for new features
+- [x] Design and implement additional themes
+- [x] Add custom habit icons/emoji selection
+- [x] Improve transition animations between screens
+- [x] Create a more comprehensive onboarding experience
+- [x] Implement contextual tooltips for new features
 
 ### Technical Improvements
-- [ ] Refactor storage system for better scalability
+- [x] Refactor storage system for better scalability
 - [ ] Improve data backup/restore process
 - [ ] Add automated testing for critical components
-- [ ] Implement proper error handling throughout the app
+- [x] Implement proper error handling throughout the app
 
 ## 🚀 Future Enhancements
 
@@ -117,3 +117,8 @@ This document outlines planned improvements and features for HabitSeed, organize
 - Implement screen reader compatibility
 - Maintain sufficient color contrast
 - Support text scaling and responsive layouts 
+
+
+
+  git config --global user.email "abdulhaseeb5050@gmail.com"
+  git config --global user.name "Abdul Haseeb"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { format, addDays, subDays, startOfWeek, isToday } from 'date-fns';
 import Layout from '@/components/Layout';
+import PageTransition from '@/components/PageTransition';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -151,105 +152,106 @@ const Journal = () => {
 
   return (
     <Layout>
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 mb-2">
-          <TabsTrigger value="journal" className="flex items-center gap-2">
-            <CalendarCheck className="h-4 w-4" />
-            <span>Journal</span>
-          </TabsTrigger>
-          <TabsTrigger value="stats" className="flex items-center gap-2">
-            <BarChart className="h-4 w-4" />
-            <span>Stats</span>
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="journal" className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Weekly Journal</h2>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="icon" onClick={goToPreviousWeek}>
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={goToCurrentWeek}
-                className={isCurrentWeek ? "border-primary/40 text-primary" : ""}
-              >
-                Today
-              </Button>
-              <Button variant="outline" size="icon" onClick={goToNextWeek}>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
+      <PageTransition>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-2 mb-2">
+            <TabsTrigger value="journal" className="flex items-center gap-2">
+              <CalendarCheck className="h-4 w-4" />
+              <span>Journal</span>
+            </TabsTrigger>
+            <TabsTrigger value="stats" className="flex items-center gap-2">
+              <BarChart className="h-4 w-4" />
+              <span>Stats</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="journal" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Weekly Journal</h2>
+              <div className="flex space-x-2">
+                <Button variant="outline" size="icon" onClick={goToPreviousWeek}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={goToCurrentWeek}
+                  className={isCurrentWeek ? "border-primary/40 text-primary" : ""}
+                >
+                  Today
+                </Button>
+                <Button variant="outline" size="icon" onClick={goToNextWeek}>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {isLoading || !habitsInitialized ? (
-            <div className="flex justify-center items-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-            </div>
-          ) : (
-            <>
-              {/* Weekly summary card */}
-              {habits.length > 0 && (
-                <Card className="p-4 bg-muted/30 mb-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-semibold">Week Overview</h3>
-                      <p className="text-xs text-muted-foreground">
-                        {format(weekData[0]?.date || new Date(), 'MMM d')} - {format(weekData[6]?.date || new Date(), 'MMM d, yyyy')}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <span className="text-xl font-bold">{weekSummary.percentage}%</span>
-                      <span className="text-xs text-muted-foreground">
-                        {weekSummary.completed}/{weekSummary.total} completed
-                      </span>
-                    </div>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full mt-2">
-                    <div 
-                      className="h-2 bg-primary rounded-full" 
-                      style={{ width: `${weekSummary.percentage}%` }}
-                    ></div>
-                  </div>
-                </Card>
-              )}
-              
-              <div className="space-y-4">
-                {weekData.map((day) => (
-                  <Card 
-                    key={day.formattedDate} 
-                    className={`p-4 ${day.isToday ? 'border-primary/40' : ''}`}
-                  >
-                    <div className="flex justify-between items-center">
+            {isLoading || !habitsInitialized ? (
+              <div className="flex justify-center items-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+              </div>
+            ) : (
+              <>
+                {/* Weekly summary card */}
+                {habits.length > 0 && (
+                  <Card className="p-4 bg-muted/30 mb-2">
+                    <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium">
-                          {day.dayName}
-                          {day.isToday && (
-                            <span className="ml-2 text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">
-                              Today
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {format(day.date, 'MMMM d, yyyy')}
-                        </div>
+                        <h3 className="text-sm font-semibold">Week Overview</h3>
+                        <p className="text-xs text-muted-foreground">
+                          {format(weekData[0]?.date || new Date(), 'MMM d')} - {format(weekData[6]?.date || new Date(), 'MMM d, yyyy')}
+                        </p>
                       </div>
-                      <div className="flex flex-wrap justify-end gap-2">
-                        {habits.map((habit) => {
-                          const isCompleted = day.completedHabits.includes(habit.id);
-                          return (
-                            <div 
-                              key={habit.id}
-                              className="relative"
-                              title={habit.name}
-                            >
-                              <div
-                                className={`w-10 h-10 rounded-full flex items-center justify-center 
-                                ${isCompleted ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}
+                      <div className="flex flex-col items-end">
+                        <span className="text-xl font-bold">{weekSummary.percentage}%</span>
+                        <span className="text-xs text-muted-foreground">
+                          {weekSummary.completed}/{weekSummary.total} completed
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full mt-2">
+                      <div 
+                        className="h-2 bg-primary rounded-full" 
+                        style={{ width: `${weekSummary.percentage}%` }}
+                      ></div>
+                    </div>
+                  </Card>
+                )}
+
+            <div className="space-y-4">
+              {weekData.map((day) => (
+                    <Card 
+                      key={day.formattedDate} 
+                      className={`p-4 ${day.isToday ? 'border-primary/40' : ''}`}
+                    >
+                  <div className="flex justify-between items-center">
+                    <div>
+                          <div className="font-medium">
+                            {day.dayName}
+                            {day.isToday && (
+                              <span className="ml-2 text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">
+                                Today
+                              </span>
+                            )}
+                          </div>
+                      <div className="text-xs text-muted-foreground">
+                        {format(day.date, 'MMMM d, yyyy')}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap justify-end gap-2">
+                      {habits.map((habit) => {
+                        const isCompleted = day.completedHabits.includes(habit.id);
+                        return (
+                          <div 
+                            key={habit.id}
+                                className="relative"
+                                title={habit.name}
                               >
-                                <span>{habit.emoji}</span>
+                                <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center 
+                          ${isCompleted ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}
+                        >
+                          <span>{habit.emoji}</span>
                                 {isCompleted ? (
                                   <CheckCircle className="absolute bottom-0 right-0 h-4 w-4 text-primary bg-background rounded-full" />
                                 ) : (
@@ -262,62 +264,64 @@ const Journal = () => {
                                   {habit.streaks}
                                 </div>
                               )}
-                            </div>
-                          );
-                        })}
-                        {habits.length === 0 && (
-                          <div className="text-sm text-muted-foreground px-3 py-1">
-                            No habits yet
                           </div>
-                        )}
-                      </div>
+                        );
+                      })}
+                      {habits.length === 0 && (
+                        <div className="text-sm text-muted-foreground px-3 py-1">
+                          No habits yet
+                        </div>
+                      )}
                     </div>
-                    
-                    {/* Show habit completion summary for this day */}
-                    {habits.length > 0 && (
-                      <div className="mt-3 pt-3 border-t">
-                        <div className="flex justify-between items-center">
-                          <p className="text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <CheckCircle className="h-3 w-3 text-primary" />
-                              {day.completedHabits.length}/{habits.length} completed
-                            </span>
-                          </p>
-                          <div className="w-24 h-1.5 bg-muted rounded-full">
-                            <div 
-                              className="h-1.5 bg-primary rounded-full" 
-                              style={{ width: `${(day.completedHabits.length / habits.length) * 100}%` }}
-                            ></div>
+                  </div>
+                      
+                      {/* Show habit completion summary for this day */}
+                      {habits.length > 0 && (
+                        <div className="mt-3 pt-3 border-t">
+                          <div className="flex justify-between items-center">
+                            <p className="text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <CheckCircle className="h-3 w-3 text-primary" />
+                                {day.completedHabits.length}/{habits.length} completed
+                              </span>
+                            </p>
+                            <div className="w-24 h-1.5 bg-muted rounded-full">
+                              <div 
+                                className="h-1.5 bg-primary rounded-full" 
+                                style={{ width: `${(day.completedHabits.length / habits.length) * 100}%` }}
+                              ></div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                    
-                    {day.isToday && (
-                      <div className="mt-3 pt-3 border-t text-sm text-muted-foreground">
-                        <p>Complete your habits for today on the Today tab</p>
-                      </div>
-                    )}
-                  </Card>
-                ))}
-              </div>
-            </>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="stats">
-          {isLoading || !habitsInitialized ? (
-            <div className="flex justify-center items-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                      )}
+                      
+                      {day.isToday && (
+                        <div className="mt-3 pt-3 border-t text-sm text-muted-foreground">
+                          <p>Complete your habits for today on the Today tab</p>
+                        </div>
+                      )}
+                </Card>
+              ))}
             </div>
-          ) : (
+              </>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="stats" className="space-y-4">
+            {isLoading || !habitsInitialized ? (
+              <div className="flex justify-center items-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+              </div>
+            ) : (
             <HabitStats 
               habits={habits} 
-              completionsByDay={completionsByDay}
+              completionsByDay={completionsByDay} 
+              showStreakBadges={showStreakBadges}
             />
-          )}
-        </TabsContent>
-      </Tabs>
+            )}
+          </TabsContent>
+        </Tabs>
+      </PageTransition>
     </Layout>
   );
 };
