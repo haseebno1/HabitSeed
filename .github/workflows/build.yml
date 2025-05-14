@@ -11,27 +11,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
     
-    - name: Set up Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
         cache: 'npm'
     
+    - name: Show Node and NPM versions
+      run: |
+        node --version
+        npm --version
+    
     - name: Install dependencies
       run: npm ci --legacy-peer-deps
+      continue-on-error: true
+    
+    - name: Retry install with force
+      if: ${{ failure() }}
+      run: npm install --force
     
     - name: Debug node_modules
       run: |
-        echo "Node modules directory:"
+        echo "Node modules directory count:"
         ls -la node_modules | wc -l
+        echo "Checking for key dependencies:"
+        ls -la node_modules/react || echo "React not found"
+        ls -la node_modules/vite || echo "Vite not found"
     
     - name: Build
-      run: npm run build
+      run: |
+        echo "Starting build process..."
+        npm run build
       
     - name: Debug directories
       run: |
+        echo "Working directory:"
+        pwd
+        echo "Directory contents:"
         ls -la
         echo "--- Checking dist directory ---"
         ls -la dist || echo "dist directory not found"
