@@ -72,7 +72,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <ThemeProvider storageKey="vite-ui-theme">
       <SettingsProvider>
         <QueryClientProvider client={queryClient}>
           <div className="antialiased min-h-screen">
