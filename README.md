@@ -26,7 +26,7 @@ HabitSeed is a beautiful, intuitive habit tracking app designed to help you buil
 
 <div align="center">
   <p>
-    <img src="public/screenshots/screenshot.png" alt="HabitSeed Screenshot" width="250">
+    <img src="public/screenshot.png" alt="HabitSeed Screenshot" width="250">
   </p>
 </div>
 
